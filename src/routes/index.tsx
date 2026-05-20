@@ -121,7 +121,7 @@ h1,h2,h3,h4,.display-font{font-family:'Bebas Neue','Inter',sans-serif;letter-spa
 .navbar-toggler[aria-expanded="true"] .toggler-icon span:nth-child(3){bottom:50%;transform:translateY(50%) rotate(-45deg)}
 @media(max-width:991px){
   .navbar-collapse{background:rgba(245,240,232,.97);backdrop-filter:blur(14px);border-radius:14px;margin-top:.75rem;padding:1rem;border:1px solid rgba(201,168,76,.2)}
-  .navbar.dark-mode .navbar-collapse{background:rgba(6,8,16,.97);border-color:rgba(0,255,229,.2)}
+  .navbar.dark-mode .navbar-collapse{background:rgba(10,0,0,.97);border-color:rgba(255,34,0,.25)}
   .navbar .nav-link{margin:.3rem 0;padding:.7rem .8rem!important}
 }
 
