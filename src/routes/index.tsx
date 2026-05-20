@@ -402,7 +402,7 @@ function Index() {
     const loop = () => { rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(loop); };
     window.addEventListener("mousemove", move);
     loop();
-    const hoverables = document.querySelectorAll("a, button, .skill-card, .service-card, .project-card, .testimonial-card, .hero-title");
+    const hoverables = document.querySelectorAll("a, button, .skill-card, .service-card, .project-card, .hero-title");
     const onEnter = () => ring.classList.add("hovering");
     const onLeave = () => ring.classList.remove("hovering");
     hoverables.forEach((el) => { el.addEventListener("mouseenter", onEnter); el.addEventListener("mouseleave", onLeave); });
