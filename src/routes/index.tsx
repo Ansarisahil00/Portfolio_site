@@ -486,29 +486,45 @@ function Index() {
     }
   }, []);
 
-  // Hero name hover glitch
+  // Hero name hover scatter — PERSISTENT (scatter on enter, snap back on leave)
   useEffect(() => {
+    if (loading) return;
     const el = nameRef.current;
     if (!el) return;
-    const letters = el.querySelectorAll<HTMLElement>(".letter:not(.space)");
+    const letters = Array.from(el.querySelectorAll<HTMLElement>(".letter:not(.space)"));
+    const w = window as any;
     const onEnter = () => {
-      const w = window as any;
+      if (!w.gsap) return;
       el.classList.add("glitching");
-      if (w.gsap) {
-        w.gsap.to(letters, {
-          x: () => (Math.random() - 0.5) * 60,
-          y: () => (Math.random() - 0.5) * 40,
-          rotation: () => (Math.random() - 0.5) * 40,
+      w.gsap.killTweensOf(letters);
+      letters.forEach((l) => {
+        w.gsap.to(l, {
+          x: (Math.random() - 0.5) * 300,
+          y: (Math.random() - 0.5) * 200,
+          rotation: (Math.random() - 0.5) * 90,
+          scale: 0.6 + Math.random() * 0.9,
           color: "#C9A84C",
-          duration: 0.25, ease: "power2.out",
-          onComplete: () => {
-            w.gsap.to(letters, { x: 0, y: 0, rotation: 0, color: "#1A1A1A", duration: 0.4, ease: "power3.inOut", stagger: 0.02, onComplete: () => el.classList.remove("glitching") });
-          },
+          duration: 0.45,
+          ease: "power3.out",
+          overwrite: "auto",
         });
-      }
+      });
+    };
+    const onLeave = () => {
+      el.classList.remove("glitching");
+      if (!w.gsap) return;
+      w.gsap.killTweensOf(letters);
+      w.gsap.to(letters, {
+        x: 0, y: 0, rotation: 0, scale: 1, color: "#1A1A1A",
+        duration: 0.7, ease: "elastic.out(1,0.55)", stagger: 0.015, overwrite: "auto",
+      });
     };
     el.addEventListener("mouseenter", onEnter);
-    return () => el.removeEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+    };
   }, [loading]);
 
   // Main libraries: GSAP timelines, ScrollTrigger, EmailJS, form, counters, tilt
