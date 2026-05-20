@@ -252,7 +252,7 @@ section{padding:90px 0;position:relative}
 .project-card .btn-outline-cyan{margin-top:auto;align-self:flex-start;padding:.55rem 1.2rem;font-size:.78rem}
 
 /* HUD overlay on projects */
-#projects::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,229,.04) 1px,transparent 1px);background-size:100% 4px;pointer-events:none;z-index:1;animation:scanlineMove 8s linear infinite}
+#projects::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,34,0,.05) 1px,transparent 1px);background-size:100% 4px;pointer-events:none;z-index:1;animation:scanlineMove 8s linear infinite}
 @keyframes scanlineMove{from{background-position:0 0}to{background-position:0 100px}}
 
 /* Modal dark */
