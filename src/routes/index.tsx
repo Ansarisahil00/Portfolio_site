@@ -874,6 +874,7 @@ function Index() {
       {/* ============ SKILLS — dark zone ============ */}
       <section id="skills" className="dark-zone">
         <div id="starfield" className="starfield"></div>
+        <div className="hex-overlay"></div>
         <div className="container">
           <p className="section-eyebrow">02 — Tech</p>
           <h2 className="section-title">My <span className="accent">Tech Stack</span></h2>
