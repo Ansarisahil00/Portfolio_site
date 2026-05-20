@@ -952,29 +952,7 @@ function Index() {
         </div>
       </section>
 
-      {/* ============ TESTIMONIALS — 3D flip ============ */}
-      <section id="testimonials" className="dark-zone">
-        <div className="container">
-          <p className="section-eyebrow">05 — Words</p>
-          <h2 className="section-title">What <span className="accent">Clients Say</span></h2>
-          <p className="section-sub">Kind words from people I've worked with.</p>
-          <div className="row g-4">
-            {TESTIMONIALS.map((t, i) => (
-              <div className="col-md-4" key={i}>
-                <div className="glass-dark testimonial-card">
-                  <i className="fas fa-quote-left quote"></i>
-                  <p className="t-text">{t.text}</p>
-                  <div className="stars">
-                    {[...Array(5)].map((_, k) => <i key={k} className="fas fa-star"></i>)}
-                  </div>
-                  <p className="t-name">{t.name}</p>
-                  <p className="t-role">{t.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* (Testimonials section removed) */}
 
       {/* ============ CONTACT — aurora ============ */}
       <section id="contact" className="dark-zone">
