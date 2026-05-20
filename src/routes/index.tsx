@@ -617,12 +617,18 @@ function Index() {
               scrollTrigger: { trigger: ".transition-zone", start: "center center", toggleActions: "play none none reverse" },
               onComplete: function () { (this.targets()[0] as HTMLElement).style.opacity = "0"; } });
 
-          // Skills pin + magnetic snap
+          // Skills — letters explode out + magnetic slam back + 360° Y flip on land
           gsap.from(".skill-card", {
-            scale: 0, opacity: 0, x: () => (Math.random() - 0.5) * 600, y: () => (Math.random() - 0.5) * 400,
-            rotation: () => (Math.random() - 0.5) * 180,
-            duration: 1, ease: "back.out(1.6)", stagger: 0.08,
-            scrollTrigger: { trigger: "#skills", start: "top 70%", end: "+=400", pin: true, pinSpacing: true },
+            scale: 0,
+            opacity: 0,
+            x: () => (Math.random() - 0.5) * 700,
+            y: () => (Math.random() - 0.5) * 450,
+            rotationY: () => 360 + (Math.random() - 0.5) * 180,
+            rotationZ: () => (Math.random() - 0.5) * 180,
+            duration: 1.1,
+            ease: "back.out(1.7)",
+            stagger: 0.08,
+            scrollTrigger: { trigger: "#skills", start: "top 70%", end: "+=500", pin: true, pinSpacing: true, toggleActions: "play reverse play reverse" },
           });
 
           // Services horizontal scroll
@@ -643,14 +649,15 @@ function Index() {
             });
           }
 
-          // Project cards reveal
-          gsap.from(".project-card", { y: 60, opacity: 0, duration: 0.8, stagger: 0.12, scrollTrigger: { trigger: "#projects", start: "top 75%" } });
+          // Project cards reveal — glitch dissolve
+          gsap.from(".project-card", {
+            y: 60, opacity: 0, filter: "blur(15px)",
+            duration: 0.9, stagger: 0.12, ease: "power3.out",
+            scrollTrigger: { trigger: "#projects", start: "top 75%" },
+          });
 
-          // Testimonials 3D flip
-          gsap.from(".testimonial-card", { rotationY: 90, opacity: 0, duration: 0.9, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: "#testimonials", start: "top 75%" } });
-
-          // Curtain wipe for major sections
-          ["about", "skills", "projects", "testimonials", "contact"].forEach((id) => {
+          // Curtain wipe for major sections (no testimonials)
+          ["about", "skills", "projects", "contact"].forEach((id) => {
             const sec = document.getElementById(id);
             if (!sec) return;
             const curtain = document.createElement("div");
