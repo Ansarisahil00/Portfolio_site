@@ -323,11 +323,8 @@ const PROJECTS = [
   { icon: "fas fa-folder-tree", title: "Custom CRM System", desc: "Client relationship manager with lead tracking & follow-ups", tech: ["Laravel", "MySQL", "REST API", "Bootstrap"], detail: "Created a CRM solution with lead management, follow-up reminders, client communication logs, task assignments, and analytics dashboard." },
 ];
 
-const TESTIMONIALS = [
-  { text: "Sahil built our company website from scratch and it exceeded every expectation. Fast, responsive, and beautiful design.", name: "Rahul Sharma", role: "Founder, TechVista Solutions" },
-  { text: "Very professional and easy to work with. He delivered the CRM system on time and even added extra features we didn't expect.", name: "Priya Menon", role: "Operations Manager, GreenLeaf Exports" },
-  { text: "Our eCommerce store runs smoothly thanks to Sahil. Sales have increased 40% since launch. Highly recommended!", name: "Arjun Patel", role: "CEO, StyleKart India" },
-];
+
+
 
 const TYPING_ROLES = ["Full Stack Developer", "Laravel Expert", "Web App Builder", "Problem Solver"];
 const HERO_NAME = "SAHIL ANSARI";
