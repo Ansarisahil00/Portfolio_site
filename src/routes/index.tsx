@@ -219,10 +219,16 @@ section{padding:90px 0;position:relative}
 .glass-dark:hover{border-color:rgba(0,255,229,.55);box-shadow:0 12px 40px rgba(0,102,255,.22)}
 
 /* Skills */
-.skill-card{padding:1.6rem 1rem;text-align:center;height:100%}
-.skill-card i{font-size:2.6rem;color:var(--cyan);margin-bottom:.8rem;transition:all .3s;text-shadow:0 0 18px rgba(0,255,229,.4)}
-.skill-card:hover i{transform:translateY(-6px) scale(1.12);color:#fff;text-shadow:0 0 24px var(--cyan)}
-.skill-card h6{font-family:'Inter',sans-serif;font-weight:600;margin:0;color:#e6edf9;letter-spacing:.04em}
+/* Skills — circular fire balls */
+.skill-card{padding:1.4rem .8rem;text-align:center;height:100%;border-radius:50%;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;background:radial-gradient(circle at 30% 30%,rgba(255,102,0,.12),rgba(255,34,0,.04) 60%,transparent);border:1px solid rgba(255,102,0,.25);transition:transform .4s ease,box-shadow .4s ease;max-width:160px;margin:0 auto;will-change:transform}
+.skill-card::before{content:'';position:absolute;inset:-2px;border-radius:50%;padding:2px;background:conic-gradient(from 0deg,#FF2200,#FF6600,#FFC400,#FF2200);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.7;animation:rotateBorder 5s linear infinite}
+.skill-card:hover{transform:translateY(-15px);box-shadow:0 20px 50px rgba(255,34,0,.45),0 0 40px rgba(255,102,0,.35)}
+.skill-card:hover .skill-inner{animation:spinY 4s linear infinite}
+.skill-inner{transform-style:preserve-3d}
+@keyframes spinY{to{transform:rotateY(360deg)}}
+.skill-card i{font-size:2.2rem;color:#FF6600;margin-bottom:.4rem;text-shadow:0 0 14px rgba(255,34,0,.7);display:block}
+.skill-card h6{font-family:'Inter',sans-serif;font-weight:600;margin:0;color:#fff;letter-spacing:.04em;font-size:.78rem;line-height:1.1}
+@media(max-width:576px){.skill-card{max-width:120px}.skill-card i{font-size:1.7rem}.skill-card h6{font-size:.7rem}}
 
 /* Services — horizontal scroll */
 .services-pin{position:relative;overflow:hidden}
