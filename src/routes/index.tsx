@@ -192,9 +192,10 @@ section{padding:90px 0;position:relative}
 
 /* ============ TRANSITION ZONE — ink bleed ============ */
 .transition-zone{height:90vh;position:relative;overflow:hidden;background:linear-gradient(180deg,#E5DFD0 0%,#E5DFD0 100%)}
-.ink-pour{position:absolute;left:0;right:0;top:-10%;height:120%;background:radial-gradient(ellipse 80% 60% at 50% 0%,var(--space) 0%,var(--space) 55%,transparent 80%);transform:translateY(-100%);z-index:2}
-.ink-pour::before{content:'';position:absolute;left:0;right:0;bottom:-2px;height:80px;background:radial-gradient(ellipse 60% 100% at 50% 0%,var(--space) 40%,transparent 70%)}
-.transition-stars{position:absolute;inset:0;background:var(--space);z-index:1;opacity:0}
+.ink-pour{position:absolute;left:0;right:0;top:-10%;height:120%;background:radial-gradient(ellipse 80% 60% at 50% 0%,#1A0000 0%,#3D0000 45%,#0A0A0A 80%,transparent 100%);transform:translateY(-100%);z-index:2}
+.ink-pour::before{content:'';position:absolute;left:0;right:0;bottom:-2px;height:100px;background:radial-gradient(ellipse 60% 100% at 50% 0%,#3D0000 0%,#1A0000 40%,transparent 80%);filter:blur(2px)}
+.transition-stars{position:absolute;inset:0;background:radial-gradient(ellipse at center,#3D0000 0%,#0A0A0A 70%);z-index:1;opacity:0}
+.shockwave{box-shadow:0 0 80px #FF2200,0 0 120px #FF6600 !important;border-color:#FF2200 !important}
 .shockwave{position:absolute;left:50%;top:50%;width:20px;height:20px;border-radius:50%;border:3px solid var(--cyan);transform:translate(-50%,-50%) scale(0);opacity:0;z-index:3;box-shadow:0 0 60px var(--cyan)}
 
 /* ============ DARK ZONE — fire/ember ============ */
