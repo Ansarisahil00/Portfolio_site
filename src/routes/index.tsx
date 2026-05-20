@@ -40,15 +40,16 @@ const CSS = `
   --charcoal:#1A1A1A;
   --gold:#C9A84C;
   --amber:#A0522D;
-  /* Dark zone */
-  --space:#060810;
-  --navy:#0A0F1E;
-  --cyan:#00FFE5;
-  --blue:#0066FF;
+  /* Dark zone — FIRE */
+  --space:#0A0A0A;
+  --navy:#1A0000;
+  --ember:#3D0000;
+  --cyan:#FF2200;   /* electric red (kept var name for reuse) */
+  --blue:#FF6600;   /* hot orange */
   --white:#fff;
   --grad-gold:linear-gradient(135deg,#C9A84C 0%,#A0522D 100%);
-  --grad-cyan:linear-gradient(135deg,#00FFE5 0%,#0066FF 100%);
-  --glow-cyan:0 0 30px rgba(0,255,229,.55);
+  --grad-cyan:linear-gradient(135deg,#FF2200 0%,#FF6600 100%);
+  --glow-cyan:0 0 30px rgba(255,34,0,.55);
   --glow-gold:0 0 30px rgba(201,168,76,.45);
 }
 *{box-sizing:border-box}
@@ -60,12 +61,31 @@ img{max-width:100%;height:auto;display:block}
 
 h1,h2,h3,h4,.display-font{font-family:'Bebas Neue','Inter',sans-serif;letter-spacing:.02em}
 
-/* Custom cursor */
-.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:99998;border-radius:50%;mix-blend-mode:difference;transition:transform .15s ease,background .25s ease,border-color .25s ease}
-.cursor-dot{width:8px;height:8px;background:#fff;transform:translate(-50%,-50%)}
-.cursor-ring{width:38px;height:38px;border:1.5px solid rgba(255,255,255,.7);transform:translate(-50%,-50%)}
-.cursor-ring.hovering{transform:translate(-50%,-50%) scale(1.6);border-color:var(--cyan)}
+/* Custom cursor (no mix-blend-mode — better perf over animated bg) */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:99998;border-radius:50%;transition:transform .15s ease,background .25s ease,border-color .25s ease,width .2s,height .2s}
+.cursor-dot{width:6px;height:6px;background:#FF2200;box-shadow:0 0 12px #FF2200;transform:translate(-50%,-50%)}
+.cursor-ring{width:32px;height:32px;border:1.5px solid rgba(255,34,0,.6);transform:translate(-50%,-50%)}
+.cursor-ring.hovering{transform:translate(-50%,-50%) scale(1.6);border-color:#FF6600;background:rgba(255,102,0,.15)}
 @media(hover:none),(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+/* ============ BINARY DIGITS — gold (hero) / red rain (dark) ============ */
+.binary-gold,.binary-red{position:absolute;font-family:'Courier New',monospace;font-weight:700;pointer-events:none;user-select:none;will-change:transform,opacity}
+.binary-gold{color:rgba(201,168,76,.55);text-shadow:0 0 8px rgba(201,168,76,.4);animation:binFloat linear infinite}
+@keyframes binFloat{0%{transform:translateY(110vh);opacity:0}10%{opacity:.7}90%{opacity:.7}100%{transform:translateY(-10vh);opacity:0}}
+.binary-red{color:rgba(255,34,0,.7);text-shadow:0 0 10px rgba(255,34,0,.8);animation:binRain linear infinite}
+@keyframes binRain{0%{transform:translateY(-15vh);opacity:0}10%{opacity:.9}100%{transform:translateY(110vh);opacity:0}}
+
+/* Ghost code snippets */
+.ghost-code{position:absolute;font-family:'Courier New',monospace;font-size:.85rem;color:rgba(255,102,0,.35);pointer-events:none;user-select:none;text-shadow:0 0 6px rgba(255,34,0,.4);animation:ghostFlash 6s ease-in-out infinite}
+@keyframes ghostFlash{0%,85%,100%{opacity:0}10%,25%{opacity:1}}
+
+/* Hex grid + scanline overlay for dark zone */
+.dark-zone .hex-overlay{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.04;background-image:
+  linear-gradient(60deg,transparent 49%,#FF2200 49% 51%,transparent 51%),
+  linear-gradient(-60deg,transparent 49%,#FF2200 49% 51%,transparent 51%),
+  linear-gradient(0deg,transparent 49%,#FF2200 49% 51%,transparent 51%);
+  background-size:40px 40px;animation:hexPulse 6s ease-in-out infinite}
+@keyframes hexPulse{0%,100%{opacity:.03}50%{opacity:.07}}
 
 /* ============ PRELOADER ============ */
 .preloader{position:fixed;inset:0;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;transition:opacity .8s ease,visibility .8s ease}
@@ -101,7 +121,7 @@ h1,h2,h3,h4,.display-font{font-family:'Bebas Neue','Inter',sans-serif;letter-spa
 .navbar-toggler[aria-expanded="true"] .toggler-icon span:nth-child(3){bottom:50%;transform:translateY(50%) rotate(-45deg)}
 @media(max-width:991px){
   .navbar-collapse{background:rgba(245,240,232,.97);backdrop-filter:blur(14px);border-radius:14px;margin-top:.75rem;padding:1rem;border:1px solid rgba(201,168,76,.2)}
-  .navbar.dark-mode .navbar-collapse{background:rgba(6,8,16,.97);border-color:rgba(0,255,229,.2)}
+  .navbar.dark-mode .navbar-collapse{background:rgba(10,0,0,.97);border-color:rgba(255,34,0,.25)}
   .navbar .nav-link{margin:.3rem 0;padding:.7rem .8rem!important}
 }
 
@@ -172,20 +192,26 @@ section{padding:90px 0;position:relative}
 
 /* ============ TRANSITION ZONE — ink bleed ============ */
 .transition-zone{height:90vh;position:relative;overflow:hidden;background:linear-gradient(180deg,#E5DFD0 0%,#E5DFD0 100%)}
-.ink-pour{position:absolute;left:0;right:0;top:-10%;height:120%;background:radial-gradient(ellipse 80% 60% at 50% 0%,var(--space) 0%,var(--space) 55%,transparent 80%);transform:translateY(-100%);z-index:2}
-.ink-pour::before{content:'';position:absolute;left:0;right:0;bottom:-2px;height:80px;background:radial-gradient(ellipse 60% 100% at 50% 0%,var(--space) 40%,transparent 70%)}
-.transition-stars{position:absolute;inset:0;background:var(--space);z-index:1;opacity:0}
+.ink-pour{position:absolute;left:0;right:0;top:-10%;height:120%;background:radial-gradient(ellipse 80% 60% at 50% 0%,#1A0000 0%,#3D0000 45%,#0A0A0A 80%,transparent 100%);transform:translateY(-100%);z-index:2}
+.ink-pour::before{content:'';position:absolute;left:0;right:0;bottom:-2px;height:100px;background:radial-gradient(ellipse 60% 100% at 50% 0%,#3D0000 0%,#1A0000 40%,transparent 80%);filter:blur(2px)}
+.transition-stars{position:absolute;inset:0;background:radial-gradient(ellipse at center,#3D0000 0%,#0A0A0A 70%);z-index:1;opacity:0}
+.shockwave{box-shadow:0 0 80px #FF2200,0 0 120px #FF6600 !important;border-color:#FF2200 !important}
 .shockwave{position:absolute;left:50%;top:50%;width:20px;height:20px;border-radius:50%;border:3px solid var(--cyan);transform:translate(-50%,-50%) scale(0);opacity:0;z-index:3;box-shadow:0 0 60px var(--cyan)}
 
-/* ============ DARK ZONE ============ */
-.dark-zone{background:linear-gradient(180deg,var(--space) 0%,var(--navy) 100%);color:#fff;position:relative;overflow:hidden}
+/* ============ DARK ZONE — fire/ember ============ */
+.dark-zone{background:
+  radial-gradient(ellipse 80% 50% at 50% 0%,rgba(61,0,0,.8),transparent 70%),
+  radial-gradient(ellipse 60% 40% at 0% 100%,rgba(255,34,0,.18),transparent 70%),
+  radial-gradient(ellipse 60% 40% at 100% 100%,rgba(255,102,0,.15),transparent 70%),
+  linear-gradient(180deg,#0A0A0A 0%,#0A0A0A 100%);
+  color:#fff;position:relative;overflow:hidden}
 .starfield{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:.6;animation:twinkle linear infinite}
-@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+.star{position:absolute;width:2px;height:2px;background:#FF6600;border-radius:50%;opacity:.5;box-shadow:0 0 6px #FF2200;animation:twinkle linear infinite}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.9}}
 .dark-zone .container{position:relative;z-index:2}
 .dark-zone .section-title{color:#fff}
 .dark-zone .accent{background:var(--grad-cyan);-webkit-background-clip:text;background-clip:text;color:transparent}
-.dark-zone .section-sub{color:#9fb0c9}
+.dark-zone .section-sub{color:#c9b0a8}
 .dark-zone .section-eyebrow{color:var(--cyan)}
 
 /* Glass card dark */
@@ -193,10 +219,16 @@ section{padding:90px 0;position:relative}
 .glass-dark:hover{border-color:rgba(0,255,229,.55);box-shadow:0 12px 40px rgba(0,102,255,.22)}
 
 /* Skills */
-.skill-card{padding:1.6rem 1rem;text-align:center;height:100%}
-.skill-card i{font-size:2.6rem;color:var(--cyan);margin-bottom:.8rem;transition:all .3s;text-shadow:0 0 18px rgba(0,255,229,.4)}
-.skill-card:hover i{transform:translateY(-6px) scale(1.12);color:#fff;text-shadow:0 0 24px var(--cyan)}
-.skill-card h6{font-family:'Inter',sans-serif;font-weight:600;margin:0;color:#e6edf9;letter-spacing:.04em}
+/* Skills — circular fire balls */
+.skill-card{padding:1.4rem .8rem;text-align:center;height:100%;border-radius:50%;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;background:radial-gradient(circle at 30% 30%,rgba(255,102,0,.12),rgba(255,34,0,.04) 60%,transparent);border:1px solid rgba(255,102,0,.25);transition:transform .4s ease,box-shadow .4s ease;max-width:160px;margin:0 auto;will-change:transform}
+.skill-card::before{content:'';position:absolute;inset:-2px;border-radius:50%;padding:2px;background:conic-gradient(from 0deg,#FF2200,#FF6600,#FFC400,#FF2200);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.7;animation:rotateBorder 5s linear infinite}
+.skill-card:hover{transform:translateY(-15px);box-shadow:0 20px 50px rgba(255,34,0,.45),0 0 40px rgba(255,102,0,.35)}
+.skill-card:hover .skill-inner{animation:spinY 4s linear infinite}
+.skill-inner{transform-style:preserve-3d}
+@keyframes spinY{to{transform:rotateY(360deg)}}
+.skill-card i{font-size:2.2rem;color:#FF6600;margin-bottom:.4rem;text-shadow:0 0 14px rgba(255,34,0,.7);display:block}
+.skill-card h6{font-family:'Inter',sans-serif;font-weight:600;margin:0;color:#fff;letter-spacing:.04em;font-size:.78rem;line-height:1.1}
+@media(max-width:576px){.skill-card{max-width:120px}.skill-card i{font-size:1.7rem}.skill-card h6{font-size:.7rem}}
 
 /* Services — horizontal scroll */
 .services-pin{position:relative;overflow:hidden}
@@ -220,7 +252,7 @@ section{padding:90px 0;position:relative}
 .project-card .btn-outline-cyan{margin-top:auto;align-self:flex-start;padding:.55rem 1.2rem;font-size:.78rem}
 
 /* HUD overlay on projects */
-#projects::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,229,.04) 1px,transparent 1px);background-size:100% 4px;pointer-events:none;z-index:1;animation:scanlineMove 8s linear infinite}
+#projects::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,34,0,.05) 1px,transparent 1px);background-size:100% 4px;pointer-events:none;z-index:1;animation:scanlineMove 8s linear infinite}
 @keyframes scanlineMove{from{background-position:0 0}to{background-position:0 100px}}
 
 /* Modal dark */
@@ -229,12 +261,7 @@ section{padding:90px 0;position:relative}
 .modal-dark .btn-close{filter:invert(1)}
 
 /* Testimonials */
-.testimonial-card{padding:2rem 1.6rem;height:100%;display:flex;flex-direction:column;transform-style:preserve-3d}
-.testimonial-card .quote{font-size:2rem;color:var(--cyan);margin-bottom:1rem}
-.testimonial-card .t-text{font-style:italic;color:#c4d0e3;line-height:1.7;margin-bottom:1.2rem;flex-grow:1;font-family:'Inter',sans-serif}
-.testimonial-card .stars{color:#FFD600;margin-bottom:.6rem}
-.testimonial-card .t-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.04em;color:#fff;margin-bottom:0}
-.testimonial-card .t-role{color:#8ea0bb;font-size:.85rem;font-family:'Inter',sans-serif}
+/* (testimonials section removed) */
 
 /* Contact — aurora */
 #contact{overflow:hidden}
@@ -296,11 +323,8 @@ const PROJECTS = [
   { icon: "fas fa-folder-tree", title: "Custom CRM System", desc: "Client relationship manager with lead tracking & follow-ups", tech: ["Laravel", "MySQL", "REST API", "Bootstrap"], detail: "Created a CRM solution with lead management, follow-up reminders, client communication logs, task assignments, and analytics dashboard." },
 ];
 
-const TESTIMONIALS = [
-  { text: "Sahil built our company website from scratch and it exceeded every expectation. Fast, responsive, and beautiful design.", name: "Rahul Sharma", role: "Founder, TechVista Solutions" },
-  { text: "Very professional and easy to work with. He delivered the CRM system on time and even added extra features we didn't expect.", name: "Priya Menon", role: "Operations Manager, GreenLeaf Exports" },
-  { text: "Our eCommerce store runs smoothly thanks to Sahil. Sales have increased 40% since launch. Highly recommended!", name: "Arjun Patel", role: "CEO, StyleKart India" },
-];
+
+
 
 const TYPING_ROLES = ["Full Stack Developer", "Laravel Expert", "Web App Builder", "Problem Solver"];
 const HERO_NAME = "SAHIL ANSARI";
@@ -378,7 +402,7 @@ function Index() {
     const loop = () => { rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(loop); };
     window.addEventListener("mousemove", move);
     loop();
-    const hoverables = document.querySelectorAll("a, button, .skill-card, .service-card, .project-card, .testimonial-card, .hero-title");
+    const hoverables = document.querySelectorAll("a, button, .skill-card, .service-card, .project-card, .hero-title");
     const onEnter = () => ring.classList.add("hovering");
     const onLeave = () => ring.classList.remove("hovering");
     hoverables.forEach((el) => { el.addEventListener("mouseenter", onEnter); el.addEventListener("mouseleave", onLeave); });
@@ -402,29 +426,43 @@ function Index() {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // Gold dust particles — generate
+  // Gold dust + gold binary 0/1 — hero
   useEffect(() => {
     const wrap = document.getElementById("goldDust");
     if (!wrap) return;
     wrap.innerHTML = "";
-    for (let i = 0; i < 35; i++) {
+    // soft gold dust dots (small count for perf)
+    for (let i = 0; i < 18; i++) {
       const d = document.createElement("div");
       d.className = "gold-dust";
       d.style.left = Math.random() * 100 + "%";
-      d.style.animationDuration = 8 + Math.random() * 12 + "s";
+      d.style.animationDuration = 10 + Math.random() * 12 + "s";
       d.style.animationDelay = -Math.random() * 12 + "s";
-      const s = 2 + Math.random() * 4;
+      const s = 2 + Math.random() * 3;
       d.style.width = s + "px"; d.style.height = s + "px";
       wrap.appendChild(d);
     }
+    // floating gold binary digits (Matrix-style but gold + slow)
+    for (let i = 0; i < 22; i++) {
+      const b = document.createElement("div");
+      b.className = "binary-gold";
+      b.textContent = Math.random() > 0.5 ? "1" : "0";
+      b.style.left = Math.random() * 100 + "%";
+      b.style.fontSize = (12 + Math.random() * 18) + "px";
+      b.style.animationDuration = (10 + Math.random() * 14) + "s";
+      b.style.animationDelay = -Math.random() * 14 + "s";
+      b.style.opacity = String(0.3 + Math.random() * 0.5);
+      wrap.appendChild(b);
+    }
   }, []);
 
-  // Starfield for dark zone
+  // Dark zone: red embers + red binary rain + ghost code snippets
   useEffect(() => {
     const wrap = document.getElementById("starfield");
     if (!wrap) return;
     wrap.innerHTML = "";
-    for (let i = 0; i < 90; i++) {
+    // ember dots
+    for (let i = 0; i < 45; i++) {
       const s = document.createElement("div");
       s.className = "star";
       s.style.left = Math.random() * 100 + "%";
@@ -434,6 +472,30 @@ function Index() {
       const sz = 1 + Math.random() * 2;
       s.style.width = sz + "px"; s.style.height = sz + "px";
       wrap.appendChild(s);
+    }
+    // red binary rain — right side, fast Matrix
+    for (let i = 0; i < 28; i++) {
+      const b = document.createElement("div");
+      b.className = "binary-red";
+      b.textContent = Math.random() > 0.5 ? "1" : "0";
+      // bias toward right side for that "code rain on right" feel
+      b.style.left = (40 + Math.random() * 60) + "%";
+      b.style.fontSize = (11 + Math.random() * 14) + "px";
+      b.style.animationDuration = (3 + Math.random() * 5) + "s";
+      b.style.animationDelay = -Math.random() * 6 + "s";
+      wrap.appendChild(b);
+    }
+    // ghost code snippets — flash + fade
+    const SNIPS = ["function init(){}", "SELECT * FROM users", "git commit -m 'fix'", "const dev = true;", "npm run build", "Route::get('/')", "</div>", "use App\\Models", "{ user_id: 42 }", "DROP TABLE old;"];
+    for (let i = 0; i < 6; i++) {
+      const g = document.createElement("div");
+      g.className = "ghost-code";
+      g.textContent = SNIPS[Math.floor(Math.random() * SNIPS.length)];
+      g.style.left = (5 + Math.random() * 85) + "%";
+      g.style.top = (10 + Math.random() * 75) + "%";
+      g.style.animationDelay = -Math.random() * 6 + "s";
+      g.style.fontSize = (12 + Math.random() * 6) + "px";
+      wrap.appendChild(g);
     }
   }, []);
 
@@ -454,29 +516,45 @@ function Index() {
     }
   }, []);
 
-  // Hero name hover glitch
+  // Hero name hover scatter — PERSISTENT (scatter on enter, snap back on leave)
   useEffect(() => {
+    if (loading) return;
     const el = nameRef.current;
     if (!el) return;
-    const letters = el.querySelectorAll<HTMLElement>(".letter:not(.space)");
+    const letters = Array.from(el.querySelectorAll<HTMLElement>(".letter:not(.space)"));
+    const w = window as any;
     const onEnter = () => {
-      const w = window as any;
+      if (!w.gsap) return;
       el.classList.add("glitching");
-      if (w.gsap) {
-        w.gsap.to(letters, {
-          x: () => (Math.random() - 0.5) * 60,
-          y: () => (Math.random() - 0.5) * 40,
-          rotation: () => (Math.random() - 0.5) * 40,
+      w.gsap.killTweensOf(letters);
+      letters.forEach((l) => {
+        w.gsap.to(l, {
+          x: (Math.random() - 0.5) * 300,
+          y: (Math.random() - 0.5) * 200,
+          rotation: (Math.random() - 0.5) * 90,
+          scale: 0.6 + Math.random() * 0.9,
           color: "#C9A84C",
-          duration: 0.25, ease: "power2.out",
-          onComplete: () => {
-            w.gsap.to(letters, { x: 0, y: 0, rotation: 0, color: "#1A1A1A", duration: 0.4, ease: "power3.inOut", stagger: 0.02, onComplete: () => el.classList.remove("glitching") });
-          },
+          duration: 0.45,
+          ease: "power3.out",
+          overwrite: "auto",
         });
-      }
+      });
+    };
+    const onLeave = () => {
+      el.classList.remove("glitching");
+      if (!w.gsap) return;
+      w.gsap.killTweensOf(letters);
+      w.gsap.to(letters, {
+        x: 0, y: 0, rotation: 0, scale: 1, color: "#1A1A1A",
+        duration: 0.7, ease: "elastic.out(1,0.55)", stagger: 0.015, overwrite: "auto",
+      });
     };
     el.addEventListener("mouseenter", onEnter);
-    return () => el.removeEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+    };
   }, [loading]);
 
   // Main libraries: GSAP timelines, ScrollTrigger, EmailJS, form, counters, tilt
@@ -531,12 +609,18 @@ function Index() {
               scrollTrigger: { trigger: ".transition-zone", start: "center center", toggleActions: "play none none reverse" },
               onComplete: function () { (this.targets()[0] as HTMLElement).style.opacity = "0"; } });
 
-          // Skills pin + magnetic snap
+          // Skills — letters explode out + magnetic slam back + 360° Y flip on land
           gsap.from(".skill-card", {
-            scale: 0, opacity: 0, x: () => (Math.random() - 0.5) * 600, y: () => (Math.random() - 0.5) * 400,
-            rotation: () => (Math.random() - 0.5) * 180,
-            duration: 1, ease: "back.out(1.6)", stagger: 0.08,
-            scrollTrigger: { trigger: "#skills", start: "top 70%", end: "+=400", pin: true, pinSpacing: true },
+            scale: 0,
+            opacity: 0,
+            x: () => (Math.random() - 0.5) * 700,
+            y: () => (Math.random() - 0.5) * 450,
+            rotationY: () => 360 + (Math.random() - 0.5) * 180,
+            rotationZ: () => (Math.random() - 0.5) * 180,
+            duration: 1.1,
+            ease: "back.out(1.7)",
+            stagger: 0.08,
+            scrollTrigger: { trigger: "#skills", start: "top 70%", end: "+=500", pin: true, pinSpacing: true, toggleActions: "play reverse play reverse" },
           });
 
           // Services horizontal scroll
@@ -557,14 +641,15 @@ function Index() {
             });
           }
 
-          // Project cards reveal
-          gsap.from(".project-card", { y: 60, opacity: 0, duration: 0.8, stagger: 0.12, scrollTrigger: { trigger: "#projects", start: "top 75%" } });
+          // Project cards reveal — glitch dissolve
+          gsap.from(".project-card", {
+            y: 60, opacity: 0, filter: "blur(15px)",
+            duration: 0.9, stagger: 0.12, ease: "power3.out",
+            scrollTrigger: { trigger: "#projects", start: "top 75%" },
+          });
 
-          // Testimonials 3D flip
-          gsap.from(".testimonial-card", { rotationY: 90, opacity: 0, duration: 0.9, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: "#testimonials", start: "top 75%" } });
-
-          // Curtain wipe for major sections
-          ["about", "skills", "projects", "testimonials", "contact"].forEach((id) => {
+          // Curtain wipe for major sections (no testimonials)
+          ["about", "skills", "projects", "contact"].forEach((id) => {
             const sec = document.getElementById(id);
             if (!sec) return;
             const curtain = document.createElement("div");
@@ -789,6 +874,7 @@ function Index() {
       {/* ============ SKILLS — dark zone ============ */}
       <section id="skills" className="dark-zone">
         <div id="starfield" className="starfield"></div>
+        <div className="hex-overlay"></div>
         <div className="container">
           <p className="section-eyebrow">02 — Tech</p>
           <h2 className="section-title">My <span className="accent">Tech Stack</span></h2>
@@ -804,9 +890,11 @@ function Index() {
               { i: "fas fa-database", t: "MySQL / PostgreSQL" },
             ].map((s, i) => (
               <div className="col-6 col-md-4 col-lg-3" key={i}>
-                <div className="glass-dark skill-card">
-                  <i className={s.i}></i>
-                  <h6>{s.t}</h6>
+                <div className="skill-card">
+                  <div className="skill-inner">
+                    <i className={s.i}></i>
+                    <h6>{s.t}</h6>
+                  </div>
                 </div>
               </div>
             ))}
@@ -867,29 +955,7 @@ function Index() {
         </div>
       </section>
 
-      {/* ============ TESTIMONIALS — 3D flip ============ */}
-      <section id="testimonials" className="dark-zone">
-        <div className="container">
-          <p className="section-eyebrow">05 — Words</p>
-          <h2 className="section-title">What <span className="accent">Clients Say</span></h2>
-          <p className="section-sub">Kind words from people I've worked with.</p>
-          <div className="row g-4">
-            {TESTIMONIALS.map((t, i) => (
-              <div className="col-md-4" key={i}>
-                <div className="glass-dark testimonial-card">
-                  <i className="fas fa-quote-left quote"></i>
-                  <p className="t-text">{t.text}</p>
-                  <div className="stars">
-                    {[...Array(5)].map((_, k) => <i key={k} className="fas fa-star"></i>)}
-                  </div>
-                  <p className="t-name">{t.name}</p>
-                  <p className="t-role">{t.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* (Testimonials section removed) */}
 
       {/* ============ CONTACT — aurora ============ */}
       <section id="contact" className="dark-zone">
