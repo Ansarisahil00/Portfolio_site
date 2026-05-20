@@ -197,15 +197,20 @@ section{padding:90px 0;position:relative}
 .transition-stars{position:absolute;inset:0;background:var(--space);z-index:1;opacity:0}
 .shockwave{position:absolute;left:50%;top:50%;width:20px;height:20px;border-radius:50%;border:3px solid var(--cyan);transform:translate(-50%,-50%) scale(0);opacity:0;z-index:3;box-shadow:0 0 60px var(--cyan)}
 
-/* ============ DARK ZONE ============ */
-.dark-zone{background:linear-gradient(180deg,var(--space) 0%,var(--navy) 100%);color:#fff;position:relative;overflow:hidden}
+/* ============ DARK ZONE — fire/ember ============ */
+.dark-zone{background:
+  radial-gradient(ellipse 80% 50% at 50% 0%,rgba(61,0,0,.8),transparent 70%),
+  radial-gradient(ellipse 60% 40% at 0% 100%,rgba(255,34,0,.18),transparent 70%),
+  radial-gradient(ellipse 60% 40% at 100% 100%,rgba(255,102,0,.15),transparent 70%),
+  linear-gradient(180deg,#0A0A0A 0%,#0A0A0A 100%);
+  color:#fff;position:relative;overflow:hidden}
 .starfield{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:.6;animation:twinkle linear infinite}
-@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+.star{position:absolute;width:2px;height:2px;background:#FF6600;border-radius:50%;opacity:.5;box-shadow:0 0 6px #FF2200;animation:twinkle linear infinite}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.9}}
 .dark-zone .container{position:relative;z-index:2}
 .dark-zone .section-title{color:#fff}
 .dark-zone .accent{background:var(--grad-cyan);-webkit-background-clip:text;background-clip:text;color:transparent}
-.dark-zone .section-sub{color:#9fb0c9}
+.dark-zone .section-sub{color:#c9b0a8}
 .dark-zone .section-eyebrow{color:var(--cyan)}
 
 /* Glass card dark */
