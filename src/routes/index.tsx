@@ -40,15 +40,16 @@ const CSS = `
   --charcoal:#1A1A1A;
   --gold:#C9A84C;
   --amber:#A0522D;
-  /* Dark zone */
-  --space:#060810;
-  --navy:#0A0F1E;
-  --cyan:#00FFE5;
-  --blue:#0066FF;
+  /* Dark zone — FIRE */
+  --space:#0A0A0A;
+  --navy:#1A0000;
+  --ember:#3D0000;
+  --cyan:#FF2200;   /* electric red (kept var name for reuse) */
+  --blue:#FF6600;   /* hot orange */
   --white:#fff;
   --grad-gold:linear-gradient(135deg,#C9A84C 0%,#A0522D 100%);
-  --grad-cyan:linear-gradient(135deg,#00FFE5 0%,#0066FF 100%);
-  --glow-cyan:0 0 30px rgba(0,255,229,.55);
+  --grad-cyan:linear-gradient(135deg,#FF2200 0%,#FF6600 100%);
+  --glow-cyan:0 0 30px rgba(255,34,0,.55);
   --glow-gold:0 0 30px rgba(201,168,76,.45);
 }
 *{box-sizing:border-box}
