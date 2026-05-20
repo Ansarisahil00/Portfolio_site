@@ -261,12 +261,7 @@ section{padding:90px 0;position:relative}
 .modal-dark .btn-close{filter:invert(1)}
 
 /* Testimonials */
-.testimonial-card{padding:2rem 1.6rem;height:100%;display:flex;flex-direction:column;transform-style:preserve-3d}
-.testimonial-card .quote{font-size:2rem;color:var(--cyan);margin-bottom:1rem}
-.testimonial-card .t-text{font-style:italic;color:#c4d0e3;line-height:1.7;margin-bottom:1.2rem;flex-grow:1;font-family:'Inter',sans-serif}
-.testimonial-card .stars{color:#FFD600;margin-bottom:.6rem}
-.testimonial-card .t-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.04em;color:#fff;margin-bottom:0}
-.testimonial-card .t-role{color:#8ea0bb;font-size:.85rem;font-family:'Inter',sans-serif}
+/* (testimonials section removed) */
 
 /* Contact — aurora */
 #contact{overflow:hidden}
