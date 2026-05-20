@@ -61,12 +61,31 @@ img{max-width:100%;height:auto;display:block}
 
 h1,h2,h3,h4,.display-font{font-family:'Bebas Neue','Inter',sans-serif;letter-spacing:.02em}
 
-/* Custom cursor */
-.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:99998;border-radius:50%;mix-blend-mode:difference;transition:transform .15s ease,background .25s ease,border-color .25s ease}
-.cursor-dot{width:8px;height:8px;background:#fff;transform:translate(-50%,-50%)}
-.cursor-ring{width:38px;height:38px;border:1.5px solid rgba(255,255,255,.7);transform:translate(-50%,-50%)}
-.cursor-ring.hovering{transform:translate(-50%,-50%) scale(1.6);border-color:var(--cyan)}
+/* Custom cursor (no mix-blend-mode — better perf over animated bg) */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:99998;border-radius:50%;transition:transform .15s ease,background .25s ease,border-color .25s ease,width .2s,height .2s}
+.cursor-dot{width:6px;height:6px;background:#FF2200;box-shadow:0 0 12px #FF2200;transform:translate(-50%,-50%)}
+.cursor-ring{width:32px;height:32px;border:1.5px solid rgba(255,34,0,.6);transform:translate(-50%,-50%)}
+.cursor-ring.hovering{transform:translate(-50%,-50%) scale(1.6);border-color:#FF6600;background:rgba(255,102,0,.15)}
 @media(hover:none),(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+/* ============ BINARY DIGITS — gold (hero) / red rain (dark) ============ */
+.binary-gold,.binary-red{position:absolute;font-family:'Courier New',monospace;font-weight:700;pointer-events:none;user-select:none;will-change:transform,opacity}
+.binary-gold{color:rgba(201,168,76,.55);text-shadow:0 0 8px rgba(201,168,76,.4);animation:binFloat linear infinite}
+@keyframes binFloat{0%{transform:translateY(110vh);opacity:0}10%{opacity:.7}90%{opacity:.7}100%{transform:translateY(-10vh);opacity:0}}
+.binary-red{color:rgba(255,34,0,.7);text-shadow:0 0 10px rgba(255,34,0,.8);animation:binRain linear infinite}
+@keyframes binRain{0%{transform:translateY(-15vh);opacity:0}10%{opacity:.9}100%{transform:translateY(110vh);opacity:0}}
+
+/* Ghost code snippets */
+.ghost-code{position:absolute;font-family:'Courier New',monospace;font-size:.85rem;color:rgba(255,102,0,.35);pointer-events:none;user-select:none;text-shadow:0 0 6px rgba(255,34,0,.4);animation:ghostFlash 6s ease-in-out infinite}
+@keyframes ghostFlash{0%,85%,100%{opacity:0}10%,25%{opacity:1}}
+
+/* Hex grid + scanline overlay for dark zone */
+.dark-zone .hex-overlay{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.04;background-image:
+  linear-gradient(60deg,transparent 49%,#FF2200 49% 51%,transparent 51%),
+  linear-gradient(-60deg,transparent 49%,#FF2200 49% 51%,transparent 51%),
+  linear-gradient(0deg,transparent 49%,#FF2200 49% 51%,transparent 51%);
+  background-size:40px 40px;animation:hexPulse 6s ease-in-out infinite}
+@keyframes hexPulse{0%,100%{opacity:.03}50%{opacity:.07}}
 
 /* ============ PRELOADER ============ */
 .preloader{position:fixed;inset:0;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;transition:opacity .8s ease,visibility .8s ease}
