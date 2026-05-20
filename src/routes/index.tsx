@@ -434,29 +434,43 @@ function Index() {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // Gold dust particles — generate
+  // Gold dust + gold binary 0/1 — hero
   useEffect(() => {
     const wrap = document.getElementById("goldDust");
     if (!wrap) return;
     wrap.innerHTML = "";
-    for (let i = 0; i < 35; i++) {
+    // soft gold dust dots (small count for perf)
+    for (let i = 0; i < 18; i++) {
       const d = document.createElement("div");
       d.className = "gold-dust";
       d.style.left = Math.random() * 100 + "%";
-      d.style.animationDuration = 8 + Math.random() * 12 + "s";
+      d.style.animationDuration = 10 + Math.random() * 12 + "s";
       d.style.animationDelay = -Math.random() * 12 + "s";
-      const s = 2 + Math.random() * 4;
+      const s = 2 + Math.random() * 3;
       d.style.width = s + "px"; d.style.height = s + "px";
       wrap.appendChild(d);
     }
+    // floating gold binary digits (Matrix-style but gold + slow)
+    for (let i = 0; i < 22; i++) {
+      const b = document.createElement("div");
+      b.className = "binary-gold";
+      b.textContent = Math.random() > 0.5 ? "1" : "0";
+      b.style.left = Math.random() * 100 + "%";
+      b.style.fontSize = (12 + Math.random() * 18) + "px";
+      b.style.animationDuration = (10 + Math.random() * 14) + "s";
+      b.style.animationDelay = -Math.random() * 14 + "s";
+      b.style.opacity = String(0.3 + Math.random() * 0.5);
+      wrap.appendChild(b);
+    }
   }, []);
 
-  // Starfield for dark zone
+  // Dark zone: red embers + red binary rain + ghost code snippets
   useEffect(() => {
     const wrap = document.getElementById("starfield");
     if (!wrap) return;
     wrap.innerHTML = "";
-    for (let i = 0; i < 90; i++) {
+    // ember dots
+    for (let i = 0; i < 45; i++) {
       const s = document.createElement("div");
       s.className = "star";
       s.style.left = Math.random() * 100 + "%";
@@ -466,6 +480,30 @@ function Index() {
       const sz = 1 + Math.random() * 2;
       s.style.width = sz + "px"; s.style.height = sz + "px";
       wrap.appendChild(s);
+    }
+    // red binary rain — right side, fast Matrix
+    for (let i = 0; i < 28; i++) {
+      const b = document.createElement("div");
+      b.className = "binary-red";
+      b.textContent = Math.random() > 0.5 ? "1" : "0";
+      // bias toward right side for that "code rain on right" feel
+      b.style.left = (40 + Math.random() * 60) + "%";
+      b.style.fontSize = (11 + Math.random() * 14) + "px";
+      b.style.animationDuration = (3 + Math.random() * 5) + "s";
+      b.style.animationDelay = -Math.random() * 6 + "s";
+      wrap.appendChild(b);
+    }
+    // ghost code snippets — flash + fade
+    const SNIPS = ["function init(){}", "SELECT * FROM users", "git commit -m 'fix'", "const dev = true;", "npm run build", "Route::get('/')", "</div>", "use App\\Models", "{ user_id: 42 }", "DROP TABLE old;"];
+    for (let i = 0; i < 6; i++) {
+      const g = document.createElement("div");
+      g.className = "ghost-code";
+      g.textContent = SNIPS[Math.floor(Math.random() * SNIPS.length)];
+      g.style.left = (5 + Math.random() * 85) + "%";
+      g.style.top = (10 + Math.random() * 75) + "%";
+      g.style.animationDelay = -Math.random() * 6 + "s";
+      g.style.fontSize = (12 + Math.random() * 6) + "px";
+      wrap.appendChild(g);
     }
   }, []);
 
