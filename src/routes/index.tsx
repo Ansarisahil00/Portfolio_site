@@ -890,9 +890,11 @@ function Index() {
               { i: "fas fa-database", t: "MySQL / PostgreSQL" },
             ].map((s, i) => (
               <div className="col-6 col-md-4 col-lg-3" key={i}>
-                <div className="glass-dark skill-card">
-                  <i className={s.i}></i>
-                  <h6>{s.t}</h6>
+                <div className="skill-card">
+                  <div className="skill-inner">
+                    <i className={s.i}></i>
+                    <h6>{s.t}</h6>
+                  </div>
                 </div>
               </div>
             ))}
