@@ -934,20 +934,26 @@ function Index() {
           <p className="section-eyebrow">02 — Tech</p>
           <h2 className="section-title">My <span className="accent">Tech Stack</span></h2>
           <p className="section-sub">Technologies I work with every day.</p>
-          <div className="row g-4">
+          <div className="row g-3 g-md-4">
             {[
-              { i: "fab fa-laravel", t: "Laravel" },
-              { i: "fab fa-php", t: "PHP (CodeIgniter 3)" },
-              { i: "fab fa-html5", t: "HTML & CSS" },
-              { i: "fab fa-python", t: "Python" },
-              { i: "fab fa-java", t: "Java" },
-              { i: "fas fa-leaf", t: "Spring Framework" },
-              { i: "fas fa-database", t: "MySQL / PostgreSQL" },
+              { i: "devicon-laravel-plain colored", t: "Laravel" },
+              { i: "devicon-php-plain colored", t: "PHP" },
+              { i: "devicon-codeigniter-plain colored", t: "CodeIgniter" },
+              { i: "devicon-html5-plain colored", t: "HTML5" },
+              { i: "devicon-css3-plain colored", t: "CSS3" },
+              { i: "devicon-javascript-plain colored", t: "JavaScript" },
+              { i: "devicon-python-plain colored", t: "Python" },
+              { i: "devicon-java-plain colored", t: "Java" },
+              { i: "devicon-spring-plain colored", t: "Spring Boot" },
+              { i: "devicon-mysql-plain colored", t: "MySQL" },
+              { i: "devicon-postgresql-plain colored", t: "PostgreSQL" },
+              { i: "devicon-bootstrap-plain colored", t: "Bootstrap" },
+              { i: "devicon-git-plain colored", t: "Git" },
             ].map((s, i) => (
-              <div className="col-6 col-md-4 col-lg-3" key={i}>
-                <div className="skill-card">
+              <div className="col-4 col-sm-3 col-md-3 col-lg-2" key={i}>
+                <div className="skill-card" data-skill={s.t} title={s.t}>
                   <div className="skill-inner">
-                    <i className={s.i}></i>
+                    <i className={s.i} style={{fontSize:"2.4rem"}}></i>
                     <h6>{s.t}</h6>
                   </div>
                 </div>
