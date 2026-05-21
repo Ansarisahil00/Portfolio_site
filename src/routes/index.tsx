@@ -571,6 +571,226 @@ function Index() {
     }
   }, []);
 
+  // ============ SECTION INDICATOR DOTS — active state + light/dark theming ============
+  useEffect(() => {
+    const dots = document.querySelectorAll<HTMLAnchorElement>("#sectionDots a");
+    if (!dots.length) return;
+    const update = () => {
+      const ids = Array.from(dots).map(d => d.dataset.target!);
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 200) current = id;
+      }
+      // detect if current section is in light zone
+      const lightZones = ["home", "about", "laptop-section"];
+      const isLight = lightZones.includes(current);
+      dots.forEach(d => {
+        d.classList.toggle("active", d.dataset.target === current);
+        d.classList.toggle("dot-light", isLight);
+      });
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  // ============ ABOUT mouse parallax on profile ============
+  useEffect(() => {
+    const wrap = document.getElementById("profileWrap");
+    const section = document.getElementById("about");
+    if (!wrap || !section) return;
+    const card = wrap.querySelector(".profile-card-3d") as HTMLElement | null;
+    const onMove = (e: MouseEvent) => {
+      const r = section.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      if (card) card.style.transform = `translate(${x}px,${y}px)`;
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  // ============ CONTACT FORM — inject focus underline divs ============
+  useEffect(() => {
+    if (loading) return;
+    const wraps = document.querySelectorAll("#contactForm .form-floating");
+    wraps.forEach((w) => {
+      if (w.querySelector(".focus-line")) return;
+      const ln = document.createElement("div");
+      ln.className = "focus-line";
+      w.appendChild(ln);
+    });
+  }, [loading]);
+
+  // ============ 3D LAPTOP SCENE — Three.js ============
+  useEffect(() => {
+    if (loading) return;
+    const w = window as any;
+    const mount = document.getElementById("laptop-canvas");
+    const tagWrap = document.getElementById("codeTagsWrap");
+    if (!mount) return;
+    let cleanup = () => {};
+
+    const init = () => {
+      if (!w.THREE) { setTimeout(init, 300); return; }
+      const THREE = w.THREE;
+      const isMobile = window.innerWidth < 768;
+      const W = mount.clientWidth || window.innerWidth;
+      const H = mount.clientHeight || (isMobile ? window.innerHeight * 0.55 : window.innerHeight);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+      camera.position.set(0, 1.5, 8);
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(W, H);
+      mount.innerHTML = ""; mount.appendChild(renderer.domElement);
+
+      // Lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+      const gold = new THREE.PointLight(0xC9A84C, 2.4, 30);
+      gold.position.set(3, 5, 4); scene.add(gold);
+      const warm = new THREE.PointLight(0xA0522D, 1.2, 25);
+      warm.position.set(-4, 2, 3); scene.add(warm);
+
+      // Laptop group
+      const laptop = new THREE.Group();
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.85, roughness: 0.25 });
+      const base = new THREE.Mesh(new THREE.BoxGeometry(3, 0.15, 2), baseMat);
+      laptop.add(base);
+
+      // Keyboard keys (grid of small dark boxes)
+      const keyMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, metalness: 0.6, roughness: 0.5 });
+      for (let kx = -1.2; kx <= 1.2; kx += 0.22) {
+        for (let kz = -0.7; kz <= 0.6; kz += 0.22) {
+          const key = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.04, 0.18), keyMat);
+          key.position.set(kx, 0.1, kz); laptop.add(key);
+        }
+      }
+
+      // Lid (pivoted)
+      const lidPivot = new THREE.Group();
+      lidPivot.position.set(0, 0.075, -1);
+      const lid = new THREE.Mesh(new THREE.BoxGeometry(3, 2, 0.1), baseMat);
+      lid.position.set(0, 1, 0); lidPivot.add(lid);
+
+      // Animated screen canvas texture (scrolling green code)
+      const cnv = document.createElement("canvas"); cnv.width = 512; cnv.height = 320;
+      const ctx = cnv.getContext("2d")!;
+      const tex = new THREE.CanvasTexture(cnv);
+      const screen = new THREE.Mesh(
+        new THREE.PlaneGeometry(2.8, 1.85),
+        new THREE.MeshBasicMaterial({ map: tex })
+      );
+      screen.position.set(0, 1, 0.051); lidPivot.add(screen);
+
+      lidPivot.rotation.x = -Math.PI / 180 * 110; // open 110°
+      laptop.add(lidPivot);
+
+      laptop.position.y = 0.5;
+      scene.add(laptop);
+
+      // Screen content drawer
+      const SNIPS = ["const dev = new Sahil();", "git push origin main", "function build(){ return ; }", "SELECT * FROM skills", "// shipping it ", "<App />", "npm run deploy", "Route::get('/')", "while(coding){ coffee++; }", "export default Magic;"];
+      let scrollY = 0;
+      const drawScreen = () => {
+        ctx.fillStyle = "#0a1a0a"; ctx.fillRect(0,0,512,320);
+        ctx.font = "bold 18px 'Courier New', monospace";
+        ctx.fillStyle = "#39FF6A";
+        ctx.shadowColor = "#39FF6A"; ctx.shadowBlur = 6;
+        for (let i = 0; i < 16; i++) {
+          const y = ((i * 22) + scrollY) % 340 - 18;
+          const txt = SNIPS[(i + Math.floor(scrollY/22)) % SNIPS.length];
+          ctx.fillText(txt, 16, y);
+        }
+        // binary edge
+        ctx.fillStyle = "rgba(57,255,106,.5)";
+        for (let i = 0; i < 18; i++) {
+          ctx.fillText(Math.random() > 0.5 ? "1" : "0", 480, (i * 18 + scrollY/2) % 320);
+        }
+        tex.needsUpdate = true;
+      };
+
+      // Mouse 360° rotation
+      let targetRX = 0, targetRY = 0;
+      const onMove = (e: MouseEvent) => {
+        const r = mount.getBoundingClientRect();
+        if (e.clientY < r.top || e.clientY > r.bottom) return;
+        targetRY = (e.clientX / window.innerWidth - 0.5) * Math.PI * 0.6;
+        targetRX = -(e.clientY / window.innerHeight - 0.5) * Math.PI * 0.4;
+      };
+      window.addEventListener("mousemove", onMove);
+
+      // Resize
+      const onResize = () => {
+        const NW = mount.clientWidth || window.innerWidth;
+        const NH = mount.clientHeight || (window.innerWidth < 768 ? window.innerHeight * 0.55 : window.innerHeight);
+        camera.aspect = NW / NH; camera.updateProjectionMatrix();
+        renderer.setSize(NW, NH);
+      };
+      window.addEventListener("resize", onResize);
+
+      // GSAP scroll zoom + dispersal
+      if (w.gsap && w.ScrollTrigger) {
+        w.gsap.timeline({
+          scrollTrigger: { trigger: "#laptop-section", start: "top bottom", end: "bottom top", scrub: 1.5 },
+        })
+          .fromTo(camera.position, { z: 12 }, { z: 4, ease: "none" })
+          .to(laptop.scale, { x: 2.2, y: 2.2, z: 2.2, duration: 0.3 })
+          .to(laptop.position, { y: 2, duration: 0.3 }, "<");
+      }
+
+      // Animation loop
+      let raf = 0;
+      const animate = () => {
+        scrollY += 0.6; drawScreen();
+        laptop.rotation.y += (targetRY + 0.003 - laptop.rotation.y) * 0.06;
+        laptop.rotation.x += (targetRX - laptop.rotation.x) * 0.06;
+        renderer.render(scene, camera);
+        raf = requestAnimationFrame(animate);
+      };
+      animate();
+
+      cleanup = () => {
+        cancelAnimationFrame(raf);
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("resize", onResize);
+        renderer.dispose();
+        if (mount) mount.innerHTML = "";
+      };
+    };
+    init();
+
+    // Floating code tags around laptop (DOM-based for simplicity)
+    if (tagWrap) {
+      tagWrap.innerHTML = "";
+      const TAGS = ["</>", "{ }", "=>", "//", "null", "true", "<App/>", "()=>", "[]", "&&"];
+      TAGS.forEach((t, i) => {
+        const el = document.createElement("div");
+        el.className = "code-tag"; el.textContent = t;
+        const angle = (i / TAGS.length) * Math.PI * 2;
+        const r = 38;
+        el.style.left = `calc(50% + ${Math.cos(angle) * r}vmin)`;
+        el.style.top = `calc(50% + ${Math.sin(angle) * (r * 0.5)}vmin)`;
+        tagWrap.appendChild(el);
+        if ((window as any).gsap) {
+          (window as any).gsap.to(el, {
+            rotation: 360, duration: 18 + i, repeat: -1, ease: "none",
+          });
+          (window as any).gsap.to(el, {
+            y: "+=20", yoyo: true, repeat: -1, duration: 3 + (i % 3), ease: "sine.inOut",
+          });
+        }
+      });
+    }
+
+    return () => cleanup();
+  }, [loading]);
+
+
+
   // Hero name hover scatter — PERSISTENT (scatter on enter, snap back on leave)
   useEffect(() => {
     if (loading) return;
