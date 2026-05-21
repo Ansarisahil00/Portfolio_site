@@ -1115,6 +1115,21 @@ function Index() {
         </div>
       </footer>
 
+      {/* Section indicator dots */}
+      <nav className="section-dots" id="sectionDots" aria-label="Section navigation">
+        {[
+          { id: "home", label: "Home" },
+          { id: "about", label: "About" },
+          { id: "laptop-section", label: "Code" },
+          { id: "skills", label: "Skills" },
+          { id: "services", label: "Services" },
+          { id: "projects", label: "Projects" },
+          { id: "contact", label: "Contact" },
+        ].map((s) => (
+          <a key={s.id} href={`#${s.id}`} data-target={s.id} data-label={s.label} aria-label={s.label}></a>
+        ))}
+      </nav>
+
       {/* Scroll-to-top */}
       <button className={`scroll-top${showTop ? " show" : ""}`} onClick={scrollToTop} aria-label="Scroll to top">
         <i className="fas fa-arrow-up"></i>
