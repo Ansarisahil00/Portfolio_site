@@ -664,19 +664,63 @@ function Index() {
               scrollTrigger: { trigger: ".transition-zone", start: "center center", toggleActions: "play none none reverse" },
               onComplete: function () { (this.targets()[0] as HTMLElement).style.opacity = "0"; } });
 
-          // Skills — letters explode out + magnetic slam back + 360° Y flip on land
-          gsap.from(".skill-card", {
-            scale: 0,
-            opacity: 0,
-            x: () => (Math.random() - 0.5) * 700,
-            y: () => (Math.random() - 0.5) * 450,
-            rotationY: () => 360 + (Math.random() - 0.5) * 180,
-            rotationZ: () => (Math.random() - 0.5) * 180,
-            duration: 1.1,
-            ease: "back.out(1.7)",
-            stagger: 0.08,
-            scrollTrigger: { trigger: "#skills", start: "top 70%", end: "+=500", pin: true, pinSpacing: true, toggleActions: "play reverse play reverse" },
+          // Skills — zig-zag explosion + magnetic snap back, reverses on scroll up
+          const skillCards = gsap.utils.toArray<HTMLElement>(".skill-card");
+          skillCards.forEach((card, i) => {
+            const angle = (i / skillCards.length) * Math.PI * 2;
+            const zig = i % 2 === 0 ? 1 : -1;
+            gsap.fromTo(card,
+              {
+                x: Math.cos(angle) * 500 + zig * 120,
+                y: Math.sin(angle) * 320,
+                rotationY: 720,
+                rotationZ: zig * 180,
+                scale: 0,
+                opacity: 0,
+              },
+              {
+                x: 0, y: 0, rotationY: 0, rotationZ: 0, scale: 1, opacity: 1,
+                duration: 1, ease: "elastic.out(1, 0.55)", delay: i * 0.05,
+                scrollTrigger: { trigger: "#skills", start: "top 75%", end: "bottom 30%", toggleActions: "play reverse play reverse" },
+              }
+            );
           });
+
+          // Heading letters fly in from random edges (split skill heading)
+          const skillH = document.querySelector("#skills .section-title");
+          if (skillH && !skillH.querySelector(".sl")) {
+            const txt = skillH.textContent || "";
+            skillH.innerHTML = txt.split("").map(c => `<span class="sl" style="display:inline-block">${c === " " ? "&nbsp;" : c}</span>`).join("");
+            gsap.from("#skills .sl", {
+              x: () => gsap.utils.random(-window.innerWidth, window.innerWidth),
+              y: () => gsap.utils.random(-window.innerHeight / 2, window.innerHeight / 2),
+              rotation: () => gsap.utils.random(-180, 180),
+              opacity: 0, stagger: 0.04, duration: 0.8, ease: "power4.out",
+              scrollTrigger: { trigger: "#skills", start: "top 80%" },
+            });
+          }
+
+          // 3D Cube transition timeline
+          gsap.set("#transitionCube", { scale: 0, opacity: 0 });
+          gsap.timeline({
+            scrollTrigger: { trigger: "#transition-zone", start: "top bottom", end: "bottom top", scrub: 1.2 },
+          })
+            .to("#transitionCube", { scale: 1, opacity: 1, duration: 0.2 })
+            .to("#transitionCube .cube-3d", { rotateX: 360, rotateY: 540, duration: 1, ease: "none" }, "<")
+            .to("#transitionCube", { scale: 25, duration: 0.5, ease: "power2.in" }, "-=0.4")
+            .to("#transitionCube", { scale: 0, opacity: 0, duration: 0.2 }, "-=0.05");
+
+          // Profile bidirectional flip — plays forward on enter, reverses on leave
+          gsap.fromTo(".profile-card-inner",
+            { rotateY: 0 },
+            {
+              rotateY: 360, duration: 1.2, ease: "power2.inOut",
+              scrollTrigger: {
+                trigger: ".about-section", start: "top 70%", end: "top 20%",
+                toggleActions: "play reverse play reverse",
+              },
+            }
+          );
 
           // Services horizontal scroll
           const track = document.querySelector(".services-track") as HTMLElement | null;
