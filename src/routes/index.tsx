@@ -122,9 +122,10 @@ h1,h2,h3,h4,.display-font{font-family:'Bebas Neue','Inter',sans-serif;letter-spa
 .navbar-toggler[aria-expanded="true"] .toggler-icon span:nth-child(2){opacity:0}
 .navbar-toggler[aria-expanded="true"] .toggler-icon span:nth-child(3){bottom:50%;transform:translateY(50%) rotate(-45deg)}
 @media(max-width:991px){
-  .navbar-collapse{background:rgba(245,240,232,.97);backdrop-filter:blur(14px);border-radius:14px;margin-top:.75rem;padding:1rem;border:1px solid rgba(201,168,76,.2)}
-  .navbar.dark-mode .navbar-collapse{background:rgba(10,0,0,.97);border-color:rgba(255,34,0,.25)}
-  .navbar .nav-link{margin:.3rem 0;padding:.7rem .8rem!important}
+  .navbar-collapse{background:rgba(5,5,5,.97)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:14px;margin-top:.75rem;padding:1rem;border:1px solid rgba(255,34,0,.35);box-shadow:0 12px 40px rgba(0,0,0,.6)}
+  .navbar .navbar-collapse .nav-link{color:#fff!important;margin:.3rem 0;padding:.7rem .8rem!important}
+  .navbar .navbar-collapse .nav-link:hover{color:#FF6600!important}
+  .navbar .navbar-collapse .btn-gold{display:inline-block;margin-top:.5rem}
 }
 
 /* ============ BUTTONS ============ */
