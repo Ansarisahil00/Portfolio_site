@@ -891,13 +891,17 @@ function Index() {
       </header>
 
       {/* ============ ABOUT — cream zone ============ */}
-      <section id="about" className="about-zone">
+      <section id="about" className="about-zone about-section">
         <div id="aboutBokeh" style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}></div>
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
           <p className="section-eyebrow" style={{ color: "var(--amber)" }}>01 — About</p>
           <h2 className="section-title">About <span className="accent">Me</span></h2>
-          <div className="profile-wrap">
-            <img src="/profile.jpg" alt="Sahil Ansari" className="profile-img" />
+          <div className="profile-wrap" id="profileWrap">
+            <div className="profile-card-3d">
+              <div className="profile-card-inner">
+                <img src="/profile.jpg" alt="Sahil Ansari" className="profile-img" />
+              </div>
+            </div>
           </div>
           <p className="about-text">
             {aboutWords.map((w, i) => (<span key={i} className="about-word">{w}</span>))}
@@ -919,10 +923,30 @@ function Index() {
         </div>
       </section>
 
-      {/* ============ TRANSITION ZONE — ink pour ============ */}
-      <div className="transition-zone">
+      {/* ============ 3D LAPTOP SCENE — between About and Skills ============ */}
+      <section id="laptop-section">
+        <div id="laptop-canvas"></div>
+        <div id="codeTagsWrap" style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none"}}></div>
+        <div className="container">
+          <h2 className="laptop-heading">Crafted in <span style={{color:"#A0522D"}}>Code</span></h2>
+          <p className="laptop-sub">Move your mouse · scroll to zoom in</p>
+        </div>
+      </section>
+
+      {/* ============ TRANSITION ZONE — 3D rotating cube wipe ============ */}
+      <div id="transition-zone" className="transition-zone">
         <div className="transition-stars"></div>
         <div className="ink-pour"></div>
+        <div className="cube-stage" id="transitionCube">
+          <div className="cube-3d">
+            <div className="face f-front">CREAM</div>
+            <div className="face f-back">FIRE</div>
+            <div className="face f-right">GOLD</div>
+            <div className="face f-left">CRIMSON</div>
+            <div className="face f-top">LIGHT</div>
+            <div className="face f-bottom">DARK</div>
+          </div>
+        </div>
         <div className="shockwave"></div>
       </div>
 
