@@ -312,6 +312,58 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;back
 
 @media(max-width:768px){.contact-wrap{padding:1.25rem!important}.footer-links a{margin:0 .5rem}}
 @media(max-width:375px){.container{padding-left:1rem;padding-right:1rem}}
+
+/* ============ PROFILE FLIP CARD ============ */
+.profile-card-3d{perspective:1500px;width:240px;height:240px;margin:0 auto}
+@media(max-width:576px){.profile-card-3d{width:180px;height:180px}}
+.profile-card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;will-change:transform}
+.profile-card-inner .profile-img{width:100%;height:100%}
+
+/* ============ 3D LAPTOP SECTION ============ */
+#laptop-section{min-height:100vh;position:relative;overflow:hidden;background:linear-gradient(180deg,#E5DFD0 0%,#D9CFB8 50%,#C9A84C 100%);padding:80px 0}
+#laptop-canvas{position:absolute;inset:0;z-index:1}
+.laptop-heading{position:relative;z-index:3;text-align:center;color:var(--charcoal);font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,4rem);letter-spacing:.04em;padding-top:1rem}
+.laptop-sub{position:relative;z-index:3;text-align:center;color:#5a4a2a;font-family:'Inter',sans-serif;font-size:1rem;margin-bottom:1rem}
+.code-tag{position:absolute;font-family:'Courier New',monospace;font-weight:700;color:#A0522D;text-shadow:0 0 12px rgba(201,168,76,.7);font-size:1.1rem;pointer-events:none;z-index:2;opacity:.85}
+@media(max-width:768px){#laptop-section{min-height:70vh}#laptop-canvas{height:55vh;top:auto;bottom:0}.code-tag{font-size:.8rem}}
+
+/* ============ 3D CUBE TRANSITION ============ */
+.cube-stage{perspective:1200px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:200px;z-index:5;will-change:transform}
+.cube-3d{position:relative;width:100%;height:100%;transform-style:preserve-3d;will-change:transform}
+.cube-3d .face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.1em;border:2px solid rgba(255,255,255,.15);box-shadow:inset 0 0 50px rgba(0,0,0,.3)}
+.cube-3d .f-front{background:linear-gradient(135deg,#F5F0E8,#EDE8DC);color:#1A1A1A;transform:translateZ(100px)}
+.cube-3d .f-back{background:linear-gradient(135deg,#0A0A0A,#1A0000);color:#FF6600;transform:rotateY(180deg) translateZ(100px)}
+.cube-3d .f-right{background:linear-gradient(135deg,#C9A84C,#A0522D);color:#fff;transform:rotateY(90deg) translateZ(100px)}
+.cube-3d .f-left{background:linear-gradient(135deg,#8B0000,#3D0000);color:#fff;transform:rotateY(-90deg) translateZ(100px)}
+.cube-3d .f-top{background:linear-gradient(135deg,#EDE8DC,#C9A84C);color:#1A1A1A;transform:rotateX(90deg) translateZ(100px)}
+.cube-3d .f-bottom{background:linear-gradient(135deg,#3D0000,#0A0A0A);color:#FF2200;transform:rotateX(-90deg) translateZ(100px)}
+
+/* ============ SECTION INDICATOR DOTS ============ */
+.section-dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:1040;display:flex;flex-direction:column;gap:14px;padding:10px 6px}
+.section-dots a{width:10px;height:10px;border-radius:50%;background:rgba(120,120,120,.5);display:block;transition:all .35s ease;position:relative}
+.section-dots a.dot-light{background:rgba(160,82,45,.45)}
+.section-dots a.active{background:#FF2200;box-shadow:0 0 14px #FF2200,0 0 28px rgba(255,34,0,.5);transform:scale(1.6)}
+.section-dots a.active.dot-light{background:#A0522D;box-shadow:0 0 14px #C9A84C,0 0 28px rgba(201,168,76,.5)}
+.section-dots a::after{content:attr(data-label);position:absolute;right:22px;top:50%;transform:translateY(-50%);font-family:'Inter',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#fff;background:rgba(0,0,0,.7);padding:3px 8px;border-radius:4px;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .25s}
+.section-dots a:hover::after{opacity:1}
+@media(max-width:576px){.section-dots{right:8px;gap:10px}.section-dots a{width:8px;height:8px}}
+
+/* ============ PROJECT CARDS — auto height, full content ============ */
+.project-card{height:auto!important;min-height:0!important;overflow:visible!important}
+.project-card .tech-badges{flex-wrap:wrap}
+.project-card:hover{transform:translateY(-15px);box-shadow:0 25px 60px rgba(255,34,0,.45)}
+
+/* ============ CONTACT FORM — SVG border draw on focus ============ */
+.form-floating{position:relative}
+.form-floating .focus-line{position:absolute;left:8px;right:8px;bottom:2px;height:2px;background:linear-gradient(90deg,#FF2200,#FF6600);transform:scaleX(0);transform-origin:left center;transition:transform .5s cubic-bezier(.4,0,.2,1);pointer-events:none;border-radius:2px;box-shadow:0 0 8px rgba(255,34,0,.6)}
+.form-floating:focus-within .focus-line{transform:scaleX(1)}
+
+/* Services mobile: stack & disable horizontal pin */
+@media(max-width:768px){.services-track{flex-direction:column;transform:none!important;padding:1rem}.service-card{flex:0 0 auto;width:100%;max-width:420px;margin:0 auto}}
+
+/* Skill ball sizing */
+.skill-card{min-height:140px}
+@media(max-width:480px){.skill-card{max-width:110px;min-height:110px;padding:.8rem .4rem}.skill-card i{font-size:1.6rem}.skill-card h6{font-size:.62rem}}
 `;
 
 // EmailJS credentials
