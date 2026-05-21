@@ -14,6 +14,7 @@ export const Route = createFileRoute("/")({
       { rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" },
       { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" },
       { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" },
+      { rel: "stylesheet", href: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" },
     ],
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/")({
       { src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js", defer: true },
       { src: "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js", defer: true },
       { src: "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js", defer: true },
+      { src: "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", defer: true },
       { src: "https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js", defer: true },
       { src: "https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js", defer: true },
     ],
@@ -120,9 +122,10 @@ h1,h2,h3,h4,.display-font{font-family:'Bebas Neue','Inter',sans-serif;letter-spa
 .navbar-toggler[aria-expanded="true"] .toggler-icon span:nth-child(2){opacity:0}
 .navbar-toggler[aria-expanded="true"] .toggler-icon span:nth-child(3){bottom:50%;transform:translateY(50%) rotate(-45deg)}
 @media(max-width:991px){
-  .navbar-collapse{background:rgba(245,240,232,.97);backdrop-filter:blur(14px);border-radius:14px;margin-top:.75rem;padding:1rem;border:1px solid rgba(201,168,76,.2)}
-  .navbar.dark-mode .navbar-collapse{background:rgba(10,0,0,.97);border-color:rgba(255,34,0,.25)}
-  .navbar .nav-link{margin:.3rem 0;padding:.7rem .8rem!important}
+  .navbar-collapse{background:rgba(5,5,5,.97)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:14px;margin-top:.75rem;padding:1rem;border:1px solid rgba(255,34,0,.35);box-shadow:0 12px 40px rgba(0,0,0,.6)}
+  .navbar .navbar-collapse .nav-link{color:#fff!important;margin:.3rem 0;padding:.7rem .8rem!important}
+  .navbar .navbar-collapse .nav-link:hover{color:#FF6600!important}
+  .navbar .navbar-collapse .btn-gold{display:inline-block;margin-top:.5rem}
 }
 
 /* ============ BUTTONS ============ */
@@ -309,6 +312,58 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;back
 
 @media(max-width:768px){.contact-wrap{padding:1.25rem!important}.footer-links a{margin:0 .5rem}}
 @media(max-width:375px){.container{padding-left:1rem;padding-right:1rem}}
+
+/* ============ PROFILE FLIP CARD ============ */
+.profile-card-3d{perspective:1500px;width:240px;height:240px;margin:0 auto}
+@media(max-width:576px){.profile-card-3d{width:180px;height:180px}}
+.profile-card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;will-change:transform}
+.profile-card-inner .profile-img{width:100%;height:100%}
+
+/* ============ 3D LAPTOP SECTION ============ */
+#laptop-section{min-height:100vh;position:relative;overflow:hidden;background:linear-gradient(180deg,#E5DFD0 0%,#D9CFB8 50%,#C9A84C 100%);padding:80px 0}
+#laptop-canvas{position:absolute;inset:0;z-index:1}
+.laptop-heading{position:relative;z-index:3;text-align:center;color:var(--charcoal);font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,4rem);letter-spacing:.04em;padding-top:1rem}
+.laptop-sub{position:relative;z-index:3;text-align:center;color:#5a4a2a;font-family:'Inter',sans-serif;font-size:1rem;margin-bottom:1rem}
+.code-tag{position:absolute;font-family:'Courier New',monospace;font-weight:700;color:#A0522D;text-shadow:0 0 12px rgba(201,168,76,.7);font-size:1.1rem;pointer-events:none;z-index:2;opacity:.85}
+@media(max-width:768px){#laptop-section{min-height:70vh}#laptop-canvas{height:55vh;top:auto;bottom:0}.code-tag{font-size:.8rem}}
+
+/* ============ 3D CUBE TRANSITION ============ */
+.cube-stage{perspective:1200px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:200px;z-index:5;will-change:transform}
+.cube-3d{position:relative;width:100%;height:100%;transform-style:preserve-3d;will-change:transform}
+.cube-3d .face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.1em;border:2px solid rgba(255,255,255,.15);box-shadow:inset 0 0 50px rgba(0,0,0,.3)}
+.cube-3d .f-front{background:linear-gradient(135deg,#F5F0E8,#EDE8DC);color:#1A1A1A;transform:translateZ(100px)}
+.cube-3d .f-back{background:linear-gradient(135deg,#0A0A0A,#1A0000);color:#FF6600;transform:rotateY(180deg) translateZ(100px)}
+.cube-3d .f-right{background:linear-gradient(135deg,#C9A84C,#A0522D);color:#fff;transform:rotateY(90deg) translateZ(100px)}
+.cube-3d .f-left{background:linear-gradient(135deg,#8B0000,#3D0000);color:#fff;transform:rotateY(-90deg) translateZ(100px)}
+.cube-3d .f-top{background:linear-gradient(135deg,#EDE8DC,#C9A84C);color:#1A1A1A;transform:rotateX(90deg) translateZ(100px)}
+.cube-3d .f-bottom{background:linear-gradient(135deg,#3D0000,#0A0A0A);color:#FF2200;transform:rotateX(-90deg) translateZ(100px)}
+
+/* ============ SECTION INDICATOR DOTS ============ */
+.section-dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:1040;display:flex;flex-direction:column;gap:14px;padding:10px 6px}
+.section-dots a{width:10px;height:10px;border-radius:50%;background:rgba(120,120,120,.5);display:block;transition:all .35s ease;position:relative}
+.section-dots a.dot-light{background:rgba(160,82,45,.45)}
+.section-dots a.active{background:#FF2200;box-shadow:0 0 14px #FF2200,0 0 28px rgba(255,34,0,.5);transform:scale(1.6)}
+.section-dots a.active.dot-light{background:#A0522D;box-shadow:0 0 14px #C9A84C,0 0 28px rgba(201,168,76,.5)}
+.section-dots a::after{content:attr(data-label);position:absolute;right:22px;top:50%;transform:translateY(-50%);font-family:'Inter',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#fff;background:rgba(0,0,0,.7);padding:3px 8px;border-radius:4px;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .25s}
+.section-dots a:hover::after{opacity:1}
+@media(max-width:576px){.section-dots{right:8px;gap:10px}.section-dots a{width:8px;height:8px}}
+
+/* ============ PROJECT CARDS — auto height, full content ============ */
+.project-card{height:auto!important;min-height:0!important;overflow:visible!important}
+.project-card .tech-badges{flex-wrap:wrap}
+.project-card:hover{transform:translateY(-15px);box-shadow:0 25px 60px rgba(255,34,0,.45)}
+
+/* ============ CONTACT FORM — SVG border draw on focus ============ */
+.form-floating{position:relative}
+.form-floating .focus-line{position:absolute;left:8px;right:8px;bottom:2px;height:2px;background:linear-gradient(90deg,#FF2200,#FF6600);transform:scaleX(0);transform-origin:left center;transition:transform .5s cubic-bezier(.4,0,.2,1);pointer-events:none;border-radius:2px;box-shadow:0 0 8px rgba(255,34,0,.6)}
+.form-floating:focus-within .focus-line{transform:scaleX(1)}
+
+/* Services mobile: stack & disable horizontal pin */
+@media(max-width:768px){.services-track{flex-direction:column;transform:none!important;padding:1rem}.service-card{flex:0 0 auto;width:100%;max-width:420px;margin:0 auto}}
+
+/* Skill ball sizing */
+.skill-card{min-height:140px}
+@media(max-width:480px){.skill-card{max-width:110px;min-height:110px;padding:.8rem .4rem}.skill-card i{font-size:1.6rem}.skill-card h6{font-size:.62rem}}
 `;
 
 // EmailJS credentials
@@ -516,6 +571,226 @@ function Index() {
     }
   }, []);
 
+  // ============ SECTION INDICATOR DOTS — active state + light/dark theming ============
+  useEffect(() => {
+    const dots = document.querySelectorAll<HTMLAnchorElement>("#sectionDots a");
+    if (!dots.length) return;
+    const update = () => {
+      const ids = Array.from(dots).map(d => d.dataset.target!);
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 200) current = id;
+      }
+      // detect if current section is in light zone
+      const lightZones = ["home", "about", "laptop-section"];
+      const isLight = lightZones.includes(current);
+      dots.forEach(d => {
+        d.classList.toggle("active", d.dataset.target === current);
+        d.classList.toggle("dot-light", isLight);
+      });
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  // ============ ABOUT mouse parallax on profile ============
+  useEffect(() => {
+    const wrap = document.getElementById("profileWrap");
+    const section = document.getElementById("about");
+    if (!wrap || !section) return;
+    const card = wrap.querySelector(".profile-card-3d") as HTMLElement | null;
+    const onMove = (e: MouseEvent) => {
+      const r = section.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      if (card) card.style.transform = `translate(${x}px,${y}px)`;
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  // ============ CONTACT FORM — inject focus underline divs ============
+  useEffect(() => {
+    if (loading) return;
+    const wraps = document.querySelectorAll("#contactForm .form-floating");
+    wraps.forEach((w) => {
+      if (w.querySelector(".focus-line")) return;
+      const ln = document.createElement("div");
+      ln.className = "focus-line";
+      w.appendChild(ln);
+    });
+  }, [loading]);
+
+  // ============ 3D LAPTOP SCENE — Three.js ============
+  useEffect(() => {
+    if (loading) return;
+    const w = window as any;
+    const mount = document.getElementById("laptop-canvas");
+    const tagWrap = document.getElementById("codeTagsWrap");
+    if (!mount) return;
+    let cleanup = () => {};
+
+    const init = () => {
+      if (!w.THREE) { setTimeout(init, 300); return; }
+      const THREE = w.THREE;
+      const isMobile = window.innerWidth < 768;
+      const W = mount.clientWidth || window.innerWidth;
+      const H = mount.clientHeight || (isMobile ? window.innerHeight * 0.55 : window.innerHeight);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+      camera.position.set(0, 1.5, 8);
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(W, H);
+      mount.innerHTML = ""; mount.appendChild(renderer.domElement);
+
+      // Lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+      const gold = new THREE.PointLight(0xC9A84C, 2.4, 30);
+      gold.position.set(3, 5, 4); scene.add(gold);
+      const warm = new THREE.PointLight(0xA0522D, 1.2, 25);
+      warm.position.set(-4, 2, 3); scene.add(warm);
+
+      // Laptop group
+      const laptop = new THREE.Group();
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.85, roughness: 0.25 });
+      const base = new THREE.Mesh(new THREE.BoxGeometry(3, 0.15, 2), baseMat);
+      laptop.add(base);
+
+      // Keyboard keys (grid of small dark boxes)
+      const keyMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, metalness: 0.6, roughness: 0.5 });
+      for (let kx = -1.2; kx <= 1.2; kx += 0.22) {
+        for (let kz = -0.7; kz <= 0.6; kz += 0.22) {
+          const key = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.04, 0.18), keyMat);
+          key.position.set(kx, 0.1, kz); laptop.add(key);
+        }
+      }
+
+      // Lid (pivoted)
+      const lidPivot = new THREE.Group();
+      lidPivot.position.set(0, 0.075, -1);
+      const lid = new THREE.Mesh(new THREE.BoxGeometry(3, 2, 0.1), baseMat);
+      lid.position.set(0, 1, 0); lidPivot.add(lid);
+
+      // Animated screen canvas texture (scrolling green code)
+      const cnv = document.createElement("canvas"); cnv.width = 512; cnv.height = 320;
+      const ctx = cnv.getContext("2d")!;
+      const tex = new THREE.CanvasTexture(cnv);
+      const screen = new THREE.Mesh(
+        new THREE.PlaneGeometry(2.8, 1.85),
+        new THREE.MeshBasicMaterial({ map: tex })
+      );
+      screen.position.set(0, 1, 0.051); lidPivot.add(screen);
+
+      lidPivot.rotation.x = -Math.PI / 180 * 110; // open 110°
+      laptop.add(lidPivot);
+
+      laptop.position.y = 0.5;
+      scene.add(laptop);
+
+      // Screen content drawer
+      const SNIPS = ["const dev = new Sahil();", "git push origin main", "function build(){ return ; }", "SELECT * FROM skills", "// shipping it ", "<App />", "npm run deploy", "Route::get('/')", "while(coding){ coffee++; }", "export default Magic;"];
+      let scrollY = 0;
+      const drawScreen = () => {
+        ctx.fillStyle = "#0a1a0a"; ctx.fillRect(0,0,512,320);
+        ctx.font = "bold 18px 'Courier New', monospace";
+        ctx.fillStyle = "#39FF6A";
+        ctx.shadowColor = "#39FF6A"; ctx.shadowBlur = 6;
+        for (let i = 0; i < 16; i++) {
+          const y = ((i * 22) + scrollY) % 340 - 18;
+          const txt = SNIPS[(i + Math.floor(scrollY/22)) % SNIPS.length];
+          ctx.fillText(txt, 16, y);
+        }
+        // binary edge
+        ctx.fillStyle = "rgba(57,255,106,.5)";
+        for (let i = 0; i < 18; i++) {
+          ctx.fillText(Math.random() > 0.5 ? "1" : "0", 480, (i * 18 + scrollY/2) % 320);
+        }
+        tex.needsUpdate = true;
+      };
+
+      // Mouse 360° rotation
+      let targetRX = 0, targetRY = 0;
+      const onMove = (e: MouseEvent) => {
+        const r = mount.getBoundingClientRect();
+        if (e.clientY < r.top || e.clientY > r.bottom) return;
+        targetRY = (e.clientX / window.innerWidth - 0.5) * Math.PI * 0.6;
+        targetRX = -(e.clientY / window.innerHeight - 0.5) * Math.PI * 0.4;
+      };
+      window.addEventListener("mousemove", onMove);
+
+      // Resize
+      const onResize = () => {
+        const NW = mount.clientWidth || window.innerWidth;
+        const NH = mount.clientHeight || (window.innerWidth < 768 ? window.innerHeight * 0.55 : window.innerHeight);
+        camera.aspect = NW / NH; camera.updateProjectionMatrix();
+        renderer.setSize(NW, NH);
+      };
+      window.addEventListener("resize", onResize);
+
+      // GSAP scroll zoom + dispersal
+      if (w.gsap && w.ScrollTrigger) {
+        w.gsap.timeline({
+          scrollTrigger: { trigger: "#laptop-section", start: "top bottom", end: "bottom top", scrub: 1.5 },
+        })
+          .fromTo(camera.position, { z: 12 }, { z: 4, ease: "none" })
+          .to(laptop.scale, { x: 2.2, y: 2.2, z: 2.2, duration: 0.3 })
+          .to(laptop.position, { y: 2, duration: 0.3 }, "<");
+      }
+
+      // Animation loop
+      let raf = 0;
+      const animate = () => {
+        scrollY += 0.6; drawScreen();
+        laptop.rotation.y += (targetRY + 0.003 - laptop.rotation.y) * 0.06;
+        laptop.rotation.x += (targetRX - laptop.rotation.x) * 0.06;
+        renderer.render(scene, camera);
+        raf = requestAnimationFrame(animate);
+      };
+      animate();
+
+      cleanup = () => {
+        cancelAnimationFrame(raf);
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("resize", onResize);
+        renderer.dispose();
+        if (mount) mount.innerHTML = "";
+      };
+    };
+    init();
+
+    // Floating code tags around laptop (DOM-based for simplicity)
+    if (tagWrap) {
+      tagWrap.innerHTML = "";
+      const TAGS = ["</>", "{ }", "=>", "//", "null", "true", "<App/>", "()=>", "[]", "&&"];
+      TAGS.forEach((t, i) => {
+        const el = document.createElement("div");
+        el.className = "code-tag"; el.textContent = t;
+        const angle = (i / TAGS.length) * Math.PI * 2;
+        const r = 38;
+        el.style.left = `calc(50% + ${Math.cos(angle) * r}vmin)`;
+        el.style.top = `calc(50% + ${Math.sin(angle) * (r * 0.5)}vmin)`;
+        tagWrap.appendChild(el);
+        if ((window as any).gsap) {
+          (window as any).gsap.to(el, {
+            rotation: 360, duration: 18 + i, repeat: -1, ease: "none",
+          });
+          (window as any).gsap.to(el, {
+            y: "+=20", yoyo: true, repeat: -1, duration: 3 + (i % 3), ease: "sine.inOut",
+          });
+        }
+      });
+    }
+
+    return () => cleanup();
+  }, [loading]);
+
+
+
   // Hero name hover scatter — PERSISTENT (scatter on enter, snap back on leave)
   useEffect(() => {
     if (loading) return;
@@ -609,19 +884,63 @@ function Index() {
               scrollTrigger: { trigger: ".transition-zone", start: "center center", toggleActions: "play none none reverse" },
               onComplete: function () { (this.targets()[0] as HTMLElement).style.opacity = "0"; } });
 
-          // Skills — letters explode out + magnetic slam back + 360° Y flip on land
-          gsap.from(".skill-card", {
-            scale: 0,
-            opacity: 0,
-            x: () => (Math.random() - 0.5) * 700,
-            y: () => (Math.random() - 0.5) * 450,
-            rotationY: () => 360 + (Math.random() - 0.5) * 180,
-            rotationZ: () => (Math.random() - 0.5) * 180,
-            duration: 1.1,
-            ease: "back.out(1.7)",
-            stagger: 0.08,
-            scrollTrigger: { trigger: "#skills", start: "top 70%", end: "+=500", pin: true, pinSpacing: true, toggleActions: "play reverse play reverse" },
+          // Skills — zig-zag explosion + magnetic snap back, reverses on scroll up
+          const skillCards = gsap.utils.toArray(".skill-card") as HTMLElement[];
+          skillCards.forEach((card: HTMLElement, i: number) => {
+            const angle = (i / skillCards.length) * Math.PI * 2;
+            const zig = i % 2 === 0 ? 1 : -1;
+            gsap.fromTo(card,
+              {
+                x: Math.cos(angle) * 500 + zig * 120,
+                y: Math.sin(angle) * 320,
+                rotationY: 720,
+                rotationZ: zig * 180,
+                scale: 0,
+                opacity: 0,
+              },
+              {
+                x: 0, y: 0, rotationY: 0, rotationZ: 0, scale: 1, opacity: 1,
+                duration: 1, ease: "elastic.out(1, 0.55)", delay: i * 0.05,
+                scrollTrigger: { trigger: "#skills", start: "top 75%", end: "bottom 30%", toggleActions: "play reverse play reverse" },
+              }
+            );
           });
+
+          // Heading letters fly in from random edges (split skill heading)
+          const skillH = document.querySelector("#skills .section-title");
+          if (skillH && !skillH.querySelector(".sl")) {
+            const txt = skillH.textContent || "";
+            skillH.innerHTML = txt.split("").map(c => `<span class="sl" style="display:inline-block">${c === " " ? "&nbsp;" : c}</span>`).join("");
+            gsap.from("#skills .sl", {
+              x: () => gsap.utils.random(-window.innerWidth, window.innerWidth),
+              y: () => gsap.utils.random(-window.innerHeight / 2, window.innerHeight / 2),
+              rotation: () => gsap.utils.random(-180, 180),
+              opacity: 0, stagger: 0.04, duration: 0.8, ease: "power4.out",
+              scrollTrigger: { trigger: "#skills", start: "top 80%" },
+            });
+          }
+
+          // 3D Cube transition timeline
+          gsap.set("#transitionCube", { scale: 0, opacity: 0 });
+          gsap.timeline({
+            scrollTrigger: { trigger: "#transition-zone", start: "top bottom", end: "bottom top", scrub: 1.2 },
+          })
+            .to("#transitionCube", { scale: 1, opacity: 1, duration: 0.2 })
+            .to("#transitionCube .cube-3d", { rotateX: 360, rotateY: 540, duration: 1, ease: "none" }, "<")
+            .to("#transitionCube", { scale: 25, duration: 0.5, ease: "power2.in" }, "-=0.4")
+            .to("#transitionCube", { scale: 0, opacity: 0, duration: 0.2 }, "-=0.05");
+
+          // Profile bidirectional flip — plays forward on enter, reverses on leave
+          gsap.fromTo(".profile-card-inner",
+            { rotateY: 0 },
+            {
+              rotateY: 360, duration: 1.2, ease: "power2.inOut",
+              scrollTrigger: {
+                trigger: ".about-section", start: "top 70%", end: "top 20%",
+                toggleActions: "play reverse play reverse",
+              },
+            }
+          );
 
           // Services horizontal scroll
           const track = document.querySelector(".services-track") as HTMLElement | null;
@@ -836,13 +1155,17 @@ function Index() {
       </header>
 
       {/* ============ ABOUT — cream zone ============ */}
-      <section id="about" className="about-zone">
+      <section id="about" className="about-zone about-section">
         <div id="aboutBokeh" style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}></div>
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
           <p className="section-eyebrow" style={{ color: "var(--amber)" }}>01 — About</p>
           <h2 className="section-title">About <span className="accent">Me</span></h2>
-          <div className="profile-wrap">
-            <img src="/profile.jpg" alt="Sahil Ansari" className="profile-img" />
+          <div className="profile-wrap" id="profileWrap">
+            <div className="profile-card-3d">
+              <div className="profile-card-inner">
+                <img src="/profile.jpg" alt="Sahil Ansari" className="profile-img" />
+              </div>
+            </div>
           </div>
           <p className="about-text">
             {aboutWords.map((w, i) => (<span key={i} className="about-word">{w}</span>))}
@@ -864,10 +1187,30 @@ function Index() {
         </div>
       </section>
 
-      {/* ============ TRANSITION ZONE — ink pour ============ */}
-      <div className="transition-zone">
+      {/* ============ 3D LAPTOP SCENE — between About and Skills ============ */}
+      <section id="laptop-section">
+        <div id="laptop-canvas"></div>
+        <div id="codeTagsWrap" style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none"}}></div>
+        <div className="container">
+          <h2 className="laptop-heading">Crafted in <span style={{color:"#A0522D"}}>Code</span></h2>
+          <p className="laptop-sub">Move your mouse · scroll to zoom in</p>
+        </div>
+      </section>
+
+      {/* ============ TRANSITION ZONE — 3D rotating cube wipe ============ */}
+      <div id="transition-zone" className="transition-zone">
         <div className="transition-stars"></div>
         <div className="ink-pour"></div>
+        <div className="cube-stage" id="transitionCube">
+          <div className="cube-3d">
+            <div className="face f-front">CREAM</div>
+            <div className="face f-back">FIRE</div>
+            <div className="face f-right">GOLD</div>
+            <div className="face f-left">CRIMSON</div>
+            <div className="face f-top">LIGHT</div>
+            <div className="face f-bottom">DARK</div>
+          </div>
+        </div>
         <div className="shockwave"></div>
       </div>
 
@@ -879,20 +1222,26 @@ function Index() {
           <p className="section-eyebrow">02 — Tech</p>
           <h2 className="section-title">My <span className="accent">Tech Stack</span></h2>
           <p className="section-sub">Technologies I work with every day.</p>
-          <div className="row g-4">
+          <div className="row g-3 g-md-4">
             {[
-              { i: "fab fa-laravel", t: "Laravel" },
-              { i: "fab fa-php", t: "PHP (CodeIgniter 3)" },
-              { i: "fab fa-html5", t: "HTML & CSS" },
-              { i: "fab fa-python", t: "Python" },
-              { i: "fab fa-java", t: "Java" },
-              { i: "fas fa-leaf", t: "Spring Framework" },
-              { i: "fas fa-database", t: "MySQL / PostgreSQL" },
+              { i: "devicon-laravel-plain colored", t: "Laravel" },
+              { i: "devicon-php-plain colored", t: "PHP" },
+              { i: "devicon-codeigniter-plain colored", t: "CodeIgniter" },
+              { i: "devicon-html5-plain colored", t: "HTML5" },
+              { i: "devicon-css3-plain colored", t: "CSS3" },
+              { i: "devicon-javascript-plain colored", t: "JavaScript" },
+              { i: "devicon-python-plain colored", t: "Python" },
+              { i: "devicon-java-plain colored", t: "Java" },
+              { i: "devicon-spring-plain colored", t: "Spring Boot" },
+              { i: "devicon-mysql-plain colored", t: "MySQL" },
+              { i: "devicon-postgresql-plain colored", t: "PostgreSQL" },
+              { i: "devicon-bootstrap-plain colored", t: "Bootstrap" },
+              { i: "devicon-git-plain colored", t: "Git" },
             ].map((s, i) => (
-              <div className="col-6 col-md-4 col-lg-3" key={i}>
-                <div className="skill-card">
+              <div className="col-4 col-sm-3 col-md-3 col-lg-2" key={i}>
+                <div className="skill-card" data-skill={s.t} title={s.t}>
                   <div className="skill-inner">
-                    <i className={s.i}></i>
+                    <i className={s.i} style={{fontSize:"2.4rem"}}></i>
                     <h6>{s.t}</h6>
                   </div>
                 </div>
@@ -1029,6 +1378,21 @@ function Index() {
           </p>
         </div>
       </footer>
+
+      {/* Section indicator dots */}
+      <nav className="section-dots" id="sectionDots" aria-label="Section navigation">
+        {[
+          { id: "home", label: "Home" },
+          { id: "about", label: "About" },
+          { id: "laptop-section", label: "Code" },
+          { id: "skills", label: "Skills" },
+          { id: "services", label: "Services" },
+          { id: "projects", label: "Projects" },
+          { id: "contact", label: "Contact" },
+        ].map((s) => (
+          <a key={s.id} href={`#${s.id}`} data-target={s.id} data-label={s.label} aria-label={s.label}></a>
+        ))}
+      </nav>
 
       {/* Scroll-to-top */}
       <button className={`scroll-top${showTop ? " show" : ""}`} onClick={scrollToTop} aria-label="Scroll to top">
