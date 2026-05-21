@@ -665,8 +665,8 @@ function Index() {
               onComplete: function () { (this.targets()[0] as HTMLElement).style.opacity = "0"; } });
 
           // Skills — zig-zag explosion + magnetic snap back, reverses on scroll up
-          const skillCards = gsap.utils.toArray<HTMLElement>(".skill-card");
-          skillCards.forEach((card, i) => {
+          const skillCards = gsap.utils.toArray(".skill-card") as HTMLElement[];
+          skillCards.forEach((card: HTMLElement, i: number) => {
             const angle = (i / skillCards.length) * Math.PI * 2;
             const zig = i % 2 === 0 ? 1 : -1;
             gsap.fromTo(card,
