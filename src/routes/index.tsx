@@ -1110,12 +1110,23 @@ function Index() {
   // Split about paragraph into words for scroll-reveal
   const aboutWords = "Hi, I'm Sahil Ansari — a passionate Full Stack Developer based in Bengaluru, India. I was born and raised in Birgunj, Nepal. I studied till 10th grade at Angel International Secondary School and completed my 12th at Birgunj Public College. I then moved to Bengaluru to chase my dreams in the IT field. I completed my BCA in 2022 and my MCA in 2025. I have 5+ years of hands-on experience in building web applications and I'm always excited to take on new challenges.".split(/\s+/);
 
+  // SSR shell — lightweight placeholder; full UI hydrates on client
+  if (!mounted) {
+    return (
+      <>
+        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <div className="preloader"><div className="spin" /></div>
+      </>
+    );
+  }
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       {/* Preloader */}
       <div className={`preloader${loading ? "" : " hide"}`}><div className="spin" /></div>
+
 
       {/* Navbar */}
       <nav id="mainNav" className="navbar navbar-expand-lg fixed-top">
