@@ -660,11 +660,11 @@ function Index() {
       mount.innerHTML = ""; mount.appendChild(renderer.domElement);
 
       // Lights
-      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-      const gold = new THREE.PointLight(0xC9A84C, 2.4, 30);
-      gold.position.set(3, 5, 4); scene.add(gold);
-      const warm = new THREE.PointLight(0xA0522D, 1.2, 25);
-      warm.position.set(-4, 2, 3); scene.add(warm);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+      const blue = new THREE.PointLight(0x4fc3ff, 2.6, 30);
+      blue.position.set(4, 3, 5); scene.add(blue);
+      const rim = new THREE.PointLight(0x9fe7ff, 1.2, 25);
+      rim.position.set(-5, -2, 3); scene.add(rim);
 
       // === EARTH GLOBE ===
       const earth = new THREE.Group();
