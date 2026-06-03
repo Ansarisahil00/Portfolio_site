@@ -970,12 +970,21 @@ function Index() {
             });
           }
 
-          // Project cards reveal — glitch dissolve
-          gsap.from(".project-card", {
-            y: 60, opacity: 0, filter: "blur(15px)",
-            duration: 0.9, stagger: 0.12, ease: "power3.out",
-            scrollTrigger: { trigger: "#projects", start: "top 75%" },
-          });
+          // Project cards reveal — glitch dissolve (with safety so cards never stay invisible)
+          gsap.fromTo(".project-card",
+            { y: 60, opacity: 0, filter: "blur(15px)" },
+            {
+              y: 0, opacity: 1, filter: "blur(0px)",
+              duration: 0.9, stagger: 0.12, ease: "power3.out",
+              scrollTrigger: { trigger: "#projects", start: "top 85%", toggleActions: "play none none none" },
+            }
+          );
+          // Failsafe: ensure cards are visible after 4s no matter what
+          setTimeout(() => {
+            document.querySelectorAll<HTMLElement>(".project-card").forEach((c) => {
+              c.style.opacity = "1"; c.style.filter = "none"; c.style.transform = "none";
+            });
+          }, 4000);
 
           // Curtain wipe for major sections (no testimonials)
           ["about", "skills", "projects", "contact"].forEach((id) => {
