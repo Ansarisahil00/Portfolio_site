@@ -385,11 +385,17 @@ const TYPING_ROLES = ["Full Stack Developer", "Laravel Expert", "Web App Builder
 const HERO_NAME = "SAHIL ANSARI";
 
 function Index() {
+  // Client-only render: skips heavy SSR work (Three.js/GSAP scenes never run on server)
+  // and prevents any window/document-touching effect from triggering SSR 500s.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   const [loading, setLoading] = useState(true);
   const [showTop, setShowTop] = useState(false);
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const [typed, setTyped] = useState("");
   const nameRef = useRef<HTMLHeadingElement | null>(null);
+
 
   // Preloader
   useEffect(() => {
