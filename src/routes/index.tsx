@@ -1027,8 +1027,12 @@ function Index() {
     };
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) { animateCounter(e.target as HTMLElement); io.unobserve(e.target); } });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.15, rootMargin: "0px 0px -10% 0px" });
     counters.forEach((c) => io.observe(c));
+    // Safety: if still 0 after 3s (e.g. IO never fired because already in view), force animate
+    setTimeout(() => {
+      counters.forEach((c) => { if (c.textContent === "0") animateCounter(c); });
+    }, 3000);
 
     // Contact form
     const form = document.getElementById("contactForm") as HTMLFormElement | null;
