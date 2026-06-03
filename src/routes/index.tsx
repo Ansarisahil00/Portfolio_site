@@ -327,8 +327,6 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;back
 .laptop-sub{position:relative;z-index:3;text-align:center;color:#7fb3d9;font-family:'Inter',sans-serif;font-size:1rem;margin-bottom:1rem;letter-spacing:.08em}
 .code-tag{position:absolute;font-family:'JetBrains Mono',monospace;font-size:1rem;color:rgba(120,200,255,.7);text-shadow:0 0 12px rgba(80,180,255,.6);pointer-events:none;font-weight:600}
 @media(max-width:768px){#laptop-section{min-height:80vh}.code-tag{font-size:.8rem}}
-.code-tag{position:absolute;font-family:'Courier New',monospace;font-weight:700;color:#A0522D;text-shadow:0 0 12px rgba(201,168,76,.7);font-size:1.1rem;pointer-events:none;z-index:2;opacity:.85}
-@media(max-width:768px){#laptop-section{min-height:70vh}#laptop-canvas{height:55vh;top:auto;bottom:0}.code-tag{font-size:.8rem}}
 
 /* ============ 3D CUBE TRANSITION ============ */
 .cube-stage{perspective:1200px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:200px;z-index:5;will-change:transform}
