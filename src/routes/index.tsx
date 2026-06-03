@@ -320,12 +320,13 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;back
 .profile-card-inner .profile-img{width:100%;height:100%}
 
 /* ============ 3D LAPTOP SECTION ============ */
-#laptop-section{min-height:100vh;position:relative;overflow:hidden;background:linear-gradient(180deg,#E5DFD0 0%,#D9CFB8 50%,#C9A84C 100%);padding:80px 0}
-#laptop-canvas{position:absolute;inset:0;z-index:1}
-.laptop-heading{position:relative;z-index:3;text-align:center;color:var(--charcoal);font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,4rem);letter-spacing:.04em;padding-top:1rem}
-.laptop-sub{position:relative;z-index:3;text-align:center;color:#5a4a2a;font-family:'Inter',sans-serif;font-size:1rem;margin-bottom:1rem}
-.code-tag{position:absolute;font-family:'Courier New',monospace;font-weight:700;color:#A0522D;text-shadow:0 0 12px rgba(201,168,76,.7);font-size:1.1rem;pointer-events:none;z-index:2;opacity:.85}
-@media(max-width:768px){#laptop-section{min-height:70vh}#laptop-canvas{height:55vh;top:auto;bottom:0}.code-tag{font-size:.8rem}}
+#laptop-section{min-height:100vh;position:relative;overflow:hidden;background:radial-gradient(ellipse at center,#0b1a2e 0%,#050913 60%,#000 100%);padding:80px 0}
+#laptop-canvas{position:absolute;inset:0;z-index:1;cursor:grab}
+#laptop-canvas:active{cursor:grabbing}
+.laptop-heading{position:relative;z-index:3;text-align:center;color:#EAF4FF;font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,4rem);letter-spacing:.04em;padding-top:1rem;text-shadow:0 0 30px rgba(80,180,255,.4)}
+.laptop-sub{position:relative;z-index:3;text-align:center;color:#7fb3d9;font-family:'Inter',sans-serif;font-size:1rem;margin-bottom:1rem;letter-spacing:.08em}
+.code-tag{position:absolute;font-family:'JetBrains Mono',monospace;font-size:1rem;color:rgba(120,200,255,.7);text-shadow:0 0 12px rgba(80,180,255,.6);pointer-events:none;font-weight:600}
+@media(max-width:768px){#laptop-section{min-height:80vh}.code-tag{font-size:.8rem}}
 
 /* ============ 3D CUBE TRANSITION ============ */
 .cube-stage{perspective:1200px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:200px;z-index:5;will-change:transform}
@@ -376,6 +377,10 @@ const PROJECTS = [
   { icon: "fas fa-boxes-stacked", title: "Inventory Management System", desc: "A complete stock & inventory tracking web application", tech: ["Laravel", "PHP", "MySQL", "Bootstrap"], detail: "Built a full-stack inventory management system with role-based access, product CRUD, stock alerts, reporting dashboard, and PDF invoice generation." },
   { icon: "fas fa-cart-shopping", title: "eCommerce Store", desc: "Online store with cart, checkout, and payment gateway", tech: ["PHP", "CodeIgniter 3", "MySQL", "Razorpay"], detail: "Developed a multi-vendor eCommerce platform with product catalog, shopping cart, order tracking, Razorpay payment integration, and admin panel." },
   { icon: "fas fa-folder-tree", title: "Custom CRM System", desc: "Client relationship manager with lead tracking & follow-ups", tech: ["Laravel", "MySQL", "REST API", "Bootstrap"], detail: "Created a CRM solution with lead management, follow-up reminders, client communication logs, task assignments, and analytics dashboard." },
+  { icon: "fas fa-utensils", title: "Restaurant Booking App", desc: "Table reservation system with real-time availability & SMS alerts", tech: ["Laravel", "Vue.js", "MySQL", "Twilio"], detail: "Built an end-to-end restaurant reservation platform with live table availability, customer SMS confirmations, waitlist management, and an owner analytics dashboard." },
+  { icon: "fas fa-graduation-cap", title: "Learning Management System", desc: "Online course platform with video lessons, quizzes & certificates", tech: ["Laravel", "MySQL", "FFmpeg", "Stripe"], detail: "Created a complete LMS with instructor uploads, secure video streaming, auto-graded quizzes, progress tracking, Stripe checkout, and PDF certificate generation." },
+  { icon: "fas fa-hospital", title: "Clinic Appointment System", desc: "Doctor–patient appointment booking with calendar sync", tech: ["PHP", "MySQL", "Google Calendar API"], detail: "Delivered a clinic management portal with doctor schedules, patient records, online appointment booking, Google Calendar sync, and automated email reminders." },
+  { icon: "fas fa-truck-fast", title: "Logistics Tracking Portal", desc: "Real-time shipment tracking with driver & admin dashboards", tech: ["Laravel", "MySQL", "Leaflet.js", "REST API"], detail: "Engineered a logistics platform with live GPS tracking on maps, route optimization, role-based driver/admin dashboards, and delivery proof uploads." },
 ];
 
 
@@ -655,105 +660,124 @@ function Index() {
       mount.innerHTML = ""; mount.appendChild(renderer.domElement);
 
       // Lights
-      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-      const gold = new THREE.PointLight(0xC9A84C, 2.4, 30);
-      gold.position.set(3, 5, 4); scene.add(gold);
-      const warm = new THREE.PointLight(0xA0522D, 1.2, 25);
-      warm.position.set(-4, 2, 3); scene.add(warm);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+      const blue = new THREE.PointLight(0x4fc3ff, 2.6, 30);
+      blue.position.set(4, 3, 5); scene.add(blue);
+      const rim = new THREE.PointLight(0x9fe7ff, 1.2, 25);
+      rim.position.set(-5, -2, 3); scene.add(rim);
 
-      // Laptop group
-      const laptop = new THREE.Group();
-      const baseMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.85, roughness: 0.25 });
-      const base = new THREE.Mesh(new THREE.BoxGeometry(3, 0.15, 2), baseMat);
-      laptop.add(base);
+      // === EARTH GLOBE ===
+      const earth = new THREE.Group();
 
-      // Keyboard keys (grid of small dark boxes)
-      const keyMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, metalness: 0.6, roughness: 0.5 });
-      for (let kx = -1.2; kx <= 1.2; kx += 0.22) {
-        for (let kz = -0.7; kz <= 0.6; kz += 0.22) {
-          const key = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.04, 0.18), keyMat);
-          key.position.set(kx, 0.1, kz); laptop.add(key);
-        }
+      // Core solid sphere (deep ocean tint)
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0x0a2540, metalness: 0.4, roughness: 0.6, emissive: 0x081830, emissiveIntensity: 0.6,
+      });
+      const core = new THREE.Mesh(new THREE.SphereGeometry(1.6, 64, 64), coreMat);
+      earth.add(core);
+
+      // Glowing wireframe overlay (latitude/longitude grid)
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: 0x4fc3ff, wireframe: true, transparent: true, opacity: 0.55,
+      });
+      const wire = new THREE.Mesh(new THREE.SphereGeometry(1.62, 32, 24), wireMat);
+      earth.add(wire);
+
+      // Glow halo
+      const haloMat = new THREE.MeshBasicMaterial({
+        color: 0x4fc3ff, transparent: true, opacity: 0.12, side: THREE.BackSide,
+      });
+      const halo = new THREE.Mesh(new THREE.SphereGeometry(1.9, 48, 48), haloMat);
+      earth.add(halo);
+
+      // Floating "land mass" dots (random points on sphere surface for a continent-ish feel)
+      const dotGeo = new THREE.BufferGeometry();
+      const dotCount = 900;
+      const positions = new Float32Array(dotCount * 3);
+      for (let i = 0; i < dotCount; i++) {
+        const phi = Math.acos(2 * Math.random() - 1);
+        const theta = Math.random() * Math.PI * 2;
+        const r = 1.63;
+        positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+        positions[i * 3 + 1] = r * Math.cos(phi);
+        positions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
       }
+      dotGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      const dotMat = new THREE.PointsMaterial({ color: 0x9fe7ff, size: 0.035, transparent: true, opacity: 0.9 });
+      earth.add(new THREE.Points(dotGeo, dotMat));
 
-      // Lid (pivoted)
-      const lidPivot = new THREE.Group();
-      lidPivot.position.set(0, 0.075, -1);
-      const lid = new THREE.Mesh(new THREE.BoxGeometry(3, 2, 0.1), baseMat);
-      lid.position.set(0, 1, 0); lidPivot.add(lid);
+      // Orbiting ring
+      const ringGeo = new THREE.TorusGeometry(2.3, 0.012, 16, 200);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x4fc3ff, transparent: true, opacity: 0.4 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2.4;
+      earth.add(ring);
 
-      // Animated screen canvas texture (scrolling green code)
-      const cnv = document.createElement("canvas"); cnv.width = 512; cnv.height = 320;
-      const ctx = cnv.getContext("2d")!;
-      const tex = new THREE.CanvasTexture(cnv);
-      const screen = new THREE.Mesh(
-        new THREE.PlaneGeometry(2.8, 1.85),
-        new THREE.MeshBasicMaterial({ map: tex })
-      );
-      screen.position.set(0, 1, 0.051); lidPivot.add(screen);
+      // Starfield background
+      const starGeo = new THREE.BufferGeometry();
+      const starCount = 600;
+      const starPos = new Float32Array(starCount * 3);
+      for (let i = 0; i < starCount; i++) {
+        starPos[i * 3]     = (Math.random() - 0.5) * 60;
+        starPos[i * 3 + 1] = (Math.random() - 0.5) * 60;
+        starPos[i * 3 + 2] = (Math.random() - 0.5) * 60;
+      }
+      starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+      scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.05, transparent: true, opacity: 0.7 })));
 
-      lidPivot.rotation.x = -Math.PI / 180 * 110; // open 110°
-      laptop.add(lidPivot);
+      scene.add(earth);
+      camera.position.set(0, 0, 6);
 
-      laptop.position.y = 0.5;
-      scene.add(laptop);
-
-      // Screen content drawer
-      const SNIPS = ["const dev = new Sahil();", "git push origin main", "function build(){ return ; }", "SELECT * FROM skills", "// shipping it ", "<App />", "npm run deploy", "Route::get('/')", "while(coding){ coffee++; }", "export default Magic;"];
-      let scrollY = 0;
-      const drawScreen = () => {
-        ctx.fillStyle = "#0a1a0a"; ctx.fillRect(0,0,512,320);
-        ctx.font = "bold 18px 'Courier New', monospace";
-        ctx.fillStyle = "#39FF6A";
-        ctx.shadowColor = "#39FF6A"; ctx.shadowBlur = 6;
-        for (let i = 0; i < 16; i++) {
-          const y = ((i * 22) + scrollY) % 340 - 18;
-          const txt = SNIPS[(i + Math.floor(scrollY/22)) % SNIPS.length];
-          ctx.fillText(txt, 16, y);
-        }
-        // binary edge
-        ctx.fillStyle = "rgba(57,255,106,.5)";
-        for (let i = 0; i < 18; i++) {
-          ctx.fillText(Math.random() > 0.5 ? "1" : "0", 480, (i * 18 + scrollY/2) % 320);
-        }
-        tex.needsUpdate = true;
-      };
-
-      // Mouse 360° rotation
+      // Mouse interaction: hover-rotate + drag
       let targetRX = 0, targetRY = 0;
+      let isDragging = false;
+      let lastX = 0, lastY = 0;
+      let dragRX = 0, dragRY = 0;
+
       const onMove = (e: MouseEvent) => {
         const r = mount.getBoundingClientRect();
         if (e.clientY < r.top || e.clientY > r.bottom) return;
-        targetRY = (e.clientX / window.innerWidth - 0.5) * Math.PI * 0.6;
-        targetRX = -(e.clientY / window.innerHeight - 0.5) * Math.PI * 0.4;
+        if (isDragging) {
+          dragRY += (e.clientX - lastX) * 0.008;
+          dragRX += (e.clientY - lastY) * 0.008;
+          lastX = e.clientX; lastY = e.clientY;
+        } else {
+          targetRY = (e.clientX / window.innerWidth - 0.5) * Math.PI * 0.6;
+          targetRX = -(e.clientY / window.innerHeight - 0.5) * Math.PI * 0.3;
+        }
       };
+      const onDown = (e: MouseEvent) => { isDragging = true; lastX = e.clientX; lastY = e.clientY; };
+      const onUp = () => { isDragging = false; };
       window.addEventListener("mousemove", onMove);
+      mount.addEventListener("mousedown", onDown);
+      window.addEventListener("mouseup", onUp);
 
       // Resize
       const onResize = () => {
         const NW = mount.clientWidth || window.innerWidth;
-        const NH = mount.clientHeight || (window.innerWidth < 768 ? window.innerHeight * 0.55 : window.innerHeight);
+        const NH = mount.clientHeight || (window.innerWidth < 768 ? window.innerHeight * 0.7 : window.innerHeight);
         camera.aspect = NW / NH; camera.updateProjectionMatrix();
         renderer.setSize(NW, NH);
       };
       window.addEventListener("resize", onResize);
 
-      // GSAP scroll zoom + dispersal
+      // Scroll spin: globe rotates faster as user scrolls through the section
+      let scrollSpin = 0;
       if (w.gsap && w.ScrollTrigger) {
-        w.gsap.timeline({
-          scrollTrigger: { trigger: "#laptop-section", start: "top bottom", end: "bottom top", scrub: 1.5 },
-        })
-          .fromTo(camera.position, { z: 12 }, { z: 4, ease: "none" })
-          .to(laptop.scale, { x: 2.2, y: 2.2, z: 2.2, duration: 0.3 })
-          .to(laptop.position, { y: 2, duration: 0.3 }, "<");
+        w.ScrollTrigger.create({
+          trigger: "#laptop-section",
+          start: "top bottom", end: "bottom top",
+          onUpdate: (self: any) => { scrollSpin = self.progress * Math.PI * 4; },
+        });
       }
 
       // Animation loop
       let raf = 0;
       const animate = () => {
-        scrollY += 0.6; drawScreen();
-        laptop.rotation.y += (targetRY + 0.003 - laptop.rotation.y) * 0.06;
-        laptop.rotation.x += (targetRX - laptop.rotation.x) * 0.06;
+        earth.rotation.y += (targetRY + dragRY + scrollSpin * 0.005 + 0.004 - earth.rotation.y) * 0.05;
+        earth.rotation.x += (targetRX + dragRX - earth.rotation.x) * 0.05;
+        ring.rotation.z += 0.003;
+        halo.rotation.y -= 0.002;
         renderer.render(scene, camera);
         raf = requestAnimationFrame(animate);
       };
@@ -763,6 +787,8 @@ function Index() {
         cancelAnimationFrame(raf);
         window.removeEventListener("mousemove", onMove);
         window.removeEventListener("resize", onResize);
+        window.removeEventListener("mouseup", onUp);
+        mount.removeEventListener("mousedown", onDown);
         renderer.dispose();
         if (mount) mount.innerHTML = "";
       };
@@ -966,12 +992,21 @@ function Index() {
             });
           }
 
-          // Project cards reveal — glitch dissolve
-          gsap.from(".project-card", {
-            y: 60, opacity: 0, filter: "blur(15px)",
-            duration: 0.9, stagger: 0.12, ease: "power3.out",
-            scrollTrigger: { trigger: "#projects", start: "top 75%" },
-          });
+          // Project cards reveal — glitch dissolve (with safety so cards never stay invisible)
+          gsap.fromTo(".project-card",
+            { y: 60, opacity: 0, filter: "blur(15px)" },
+            {
+              y: 0, opacity: 1, filter: "blur(0px)",
+              duration: 0.9, stagger: 0.12, ease: "power3.out",
+              scrollTrigger: { trigger: "#projects", start: "top 85%", toggleActions: "play none none none" },
+            }
+          );
+          // Failsafe: ensure cards are visible after 4s no matter what
+          setTimeout(() => {
+            document.querySelectorAll<HTMLElement>(".project-card").forEach((c) => {
+              c.style.opacity = "1"; c.style.filter = "none"; c.style.transform = "none";
+            });
+          }, 4000);
 
           // Curtain wipe for major sections (no testimonials)
           ["about", "skills", "projects", "contact"].forEach((id) => {
@@ -1023,8 +1058,12 @@ function Index() {
     };
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) { animateCounter(e.target as HTMLElement); io.unobserve(e.target); } });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.15, rootMargin: "0px 0px -10% 0px" });
     counters.forEach((c) => io.observe(c));
+    // Safety: if still 0 after 3s (e.g. IO never fired because already in view), force animate
+    setTimeout(() => {
+      counters.forEach((c) => { if (c.textContent === "0") animateCounter(c); });
+    }, 3000);
 
     // Contact form
     const form = document.getElementById("contactForm") as HTMLFormElement | null;
@@ -1209,8 +1248,8 @@ function Index() {
         <div id="laptop-canvas"></div>
         <div id="codeTagsWrap" style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none"}}></div>
         <div className="container">
-          <h2 className="laptop-heading">Crafted in <span style={{color:"#A0522D"}}>Code</span></h2>
-          <p className="laptop-sub">Move your mouse · scroll to zoom in</p>
+          <h2 className="laptop-heading">Building for the <span style={{color:"#4fc3ff"}}>Whole World</span></h2>
+          <p className="laptop-sub">Hover · drag · scroll to spin the globe</p>
         </div>
       </section>
 
