@@ -1248,8 +1248,8 @@ function Index() {
         <div id="laptop-canvas"></div>
         <div id="codeTagsWrap" style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none"}}></div>
         <div className="container">
-          <h2 className="laptop-heading">Crafted in <span style={{color:"#A0522D"}}>Code</span></h2>
-          <p className="laptop-sub">Move your mouse · scroll to zoom in</p>
+          <h2 className="laptop-heading">Building for the <span style={{color:"#4fc3ff"}}>Whole World</span></h2>
+          <p className="laptop-sub">Hover · drag · scroll to spin the globe</p>
         </div>
       </section>
 
